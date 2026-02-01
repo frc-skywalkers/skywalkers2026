@@ -38,6 +38,7 @@ public class RobotContainer {
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  // private final CommandXboxController operator = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
