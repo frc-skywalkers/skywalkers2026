@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -27,5 +29,32 @@ public final class Constants {
 
     /** Replaying from a log file. */
     REPLAY
+  }
+
+  public static final class OuttakeConstants {
+
+    // can
+    public static final int MOTOR_ID = 10; // change
+    public static final String kCanBus = "rio";
+
+    // motor settings
+    public static final InvertedValue MOTOR_INVERTED = InvertedValue.CounterClockwise_Positive;
+    public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast; // test value
+
+    // current limits
+    public static final double kStatorCurrentLimit = 60.0; // test if needed
+    public static final double kSupplyCurrentLimit = 40.0; // test if needed
+
+    // velocity setpoints WILL TUNE FS
+    public static final double kAmpScoreRPM = 3000.0;
+    public static final double kFeedRPM = 1200.0;
+    public static final double kReverseRPM = -2000.0;
+    public static final double kIdleHoldRPM = 300.0;
+
+    // jam detection
+    public static final double kJamCurrentThreshold = 50.0;
+
+    // logging pth
+    public static final String kLoggingPath = "outtake/";
   }
 }
