@@ -35,6 +35,7 @@ public class RobotContainer {
 
   // controller port 0 and 1; operator and controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController operator = new CommandXboxController(1);
 
   // dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -141,15 +142,11 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // ----------------------------
-    // OUTTAKE TEST CONTROL
-    // ----------------------------
-
-    // Hold Right Bumper to run outtake
-    controller
+    // operator right bumper to test outtake
+    operator
         .rightBumper()
-        .whileTrue(Commands.run(() -> outtake.runPercent(0.6), outtake))
-        .onFalse(Commands.runOnce(() -> outtake.stop(), outtake));
+        .whileTrue(Commands.run(outtake::ampScore, outtake)) // percent=0.6, 0.7
+        .onFalse(Commands.runOnce(outtake::stop, outtake));
   }
 
   public Command getAutonomousCommand() {

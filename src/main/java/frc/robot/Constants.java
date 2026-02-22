@@ -34,25 +34,28 @@ public final class Constants {
   public static final class OuttakeConstants {
 
     // can
-    public static final int MOTOR_ID = 10; // change
+    public static final int MOTOR_ID = 40; // change
     public static final String kCanBus = "rio";
 
     // motor settings
-    public static final InvertedValue MOTOR_INVERTED = InvertedValue.CounterClockwise_Positive;
+    public static final InvertedValue MOTOR_INVERTED = InvertedValue.Clockwise_Positive;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast; // test value
 
     // current limits
-    public static final double kStatorCurrentLimit = 60.0; // test if needed
-    public static final double kSupplyCurrentLimit = 40.0; // test if needed
+    public static final double kStatorCurrentLimit = 100.0; // 60.0, 80
+    public static final double kSupplyCurrentLimit = 80.0; // 40.0, 43.0, 60
 
     // velocity setpoints WILL TUNE FS
-    public static final double kAmpScoreRPM = 3000.0;
-    public static final double kFeedRPM = 1200.0;
+    public static final double kAmpScoreRPM = 6000.0; // 5000.0, 6000.0, 8000,0, 10000
+    public static final double kFeedRPM = 2400.0; // 1200
     public static final double kReverseRPM = -2000.0;
     public static final double kIdleHoldRPM = 300.0;
 
     // jam detection
-    public static final double kJamCurrentThreshold = 50.0;
+    public static final double kJamCurrentThreshold = 60.0; // 50.0
+
+    // gEAR-ratio:
+    public static final double kGearRatio = 0.25;
 
     // logging pth
     public static final String kLoggingPath = "outtake/";

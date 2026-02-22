@@ -28,10 +28,10 @@ public class OuttakeIOTalonFX implements OuttakeIO {
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
 
     // Basic velocity PID (starting values — will tune later)
-    config.Slot0.kP = 0.12;
-    config.Slot0.kI = 0.0;
-    config.Slot0.kD = 0.0;
-    config.Slot0.kV = 0.12;
+    config.Slot0.kP = 0.16;
+    config.Slot0.kI = 0.0; // 0
+    config.Slot0.kD = 0.000005; // 0
+    config.Slot0.kV = 0.115;
 
     motor.getConfigurator().apply(config);
   }
