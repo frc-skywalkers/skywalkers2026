@@ -1,22 +1,26 @@
-/*
-package frc.robot.subsystems.intake;
-
 import org.littletonrobotics.junction.AutoLog;
 
 public interface IntakeIO {
-    @AutoLog
 
-    public static class IntakeIOInputs {
-        public double velocityRPS = 0.0;
-        public double appliedVoltage = 0.0;
-        public double supplyCurrentAMPs = 0.0;
-        public double statorCurrentAMPs = 0.0;
-        public double temperatureCelsius = 0.0;
-    }
+  @AutoLog
+  public static class IntakeIOInputs {
+    public double pivotPositionDeg = 0.0;
+    public double pivotVelocity = 0.0;
+    public double pivotAppliedVolts = 0.0;
+    public double pivotCurrent = 0.0;
 
-    public default void updateInputs(IntakeIOInputs inputs) {}
-    public default void setVoltage(double voltage) {}
-    public default void stop() {}
+    public double rollerVelocity = 0.0;
+    public double rollerAppliedVolts = 0.0;
+    public double rollerCurrent = 0.0;
 
+    public boolean jamDetected = false;
+  }
+
+  default void updateInputs(IntakeIOInputs inputs) {}
+
+  default void setPivotPositionDeg(double degrees) {}
+
+  default void setRollerVoltage(double volts) {}
+
+  default void stopRoller() {}
 }
-*/
