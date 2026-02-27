@@ -1,3 +1,5 @@
+package frc.robot.subsystems.intake;
+
 import static frc.robot.Constants.IntakeConstants.*;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -7,6 +9,7 @@ import org.littletonrobotics.junction.Logger;
 public class Intake extends SubsystemBase {
 
   public enum IntakeState {
+    IDLE,
     STOWED,
     DEPLOYED,
     INTAKING,
@@ -19,6 +22,7 @@ public class Intake extends SubsystemBase {
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
   private IntakeState state = IntakeState.STOWED;
+  // private IntakeState state = IntakeState.IDLE;
 
   private final Timer jamTimer = new Timer();
   private boolean reversingForJam = false;
@@ -38,27 +42,19 @@ public class Intake extends SubsystemBase {
 
   private void handleState() {
     switch (state) {
+      case IDLE -> {
+        io.stopRoller();
+      }
+
       case STOWED -> {
         io.setPivotPositionDeg(STOWED_DEG);
         io.stopRoller();
       }
+
       case DEPLOYED -> {
         io.setPivotPositionDeg(DEPLOYED_DEG);
         io.stopRoller();
       }
-      case INTAKING -> {
-        io.setPivotPositionDeg(DEPLOYED_DEG);
-        io.setRollerVoltage(INTAKE_VOLTAGE);
-      }
-      case OUTTAKING -> {
-        io.setPivotPositionDeg(DEPLOYED_DEG);
-        io.setRollerVoltage(OUTTAKE_VOLTAGE);
-      }
-      case HANDOFF -> {
-        io.setPivotPositionDeg(HANDOFF_DEG);
-        io.setRollerVoltage(HANDOFF_VOLTAGE);
-      }
-      case STOPPED -> io.stopRoller();
     }
   }
 

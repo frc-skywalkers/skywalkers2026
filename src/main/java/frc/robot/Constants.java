@@ -29,25 +29,25 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    // CAN IDs (placeholder — tune later)
-    public static final int PIVOT_ID = 10;
-    public static final int ROLLER_ID = 11;
-    public static final int CANCODER_ID = 12;
+    // motor settings (PLS CHANGE B4 TESTING)
+    public static final int PIVOT_ID = 42;
+    public static final int ROLLER_ID = 55;
+    public static final int CANCODER_ID = 52;
 
-    // Inversions (tune later)
+    // inversion settings (IDK IM JS GUESSING PLS TUNE)
     public static final boolean PIVOT_INVERTED = false;
     public static final boolean ROLLER_INVERTED = false;
 
-    // Current Limits
+    // current lims
     public static final double STATOR_LIMIT_AMPS = 40.0;
     public static final double JAM_CURRENT_THRESHOLD = 35.0;
 
-    // Pivot Angles (degrees)
+    // pivot (js guessing, pls check w design or sumn to see what they want)
     public static final double STOWED_DEG = 0.0;
     public static final double HANDOFF_DEG = 35.0;
     public static final double DEPLOYED_DEG = 75.0;
 
-    // Motion Magic Config (placeholder values — tune)
+    // jam detection nums
     public static final double PIVOT_kP = 60.0;
     public static final double PIVOT_kI = 0.0;
     public static final double PIVOT_kD = 2.0;
@@ -55,12 +55,12 @@ public final class Constants {
     public static final double CRUISE_VELOCITY = 60.0; // rotations/sec
     public static final double ACCELERATION = 120.0;
 
-    // Roller Voltages
-    public static final double INTAKE_VOLTAGE = 10.0;
-    public static final double OUTTAKE_VOLTAGE = -8.0;
+    // roller volltages
+    public static final double INTAKE_VOLTAGE = 1.0;
+    public static final double OUTTAKE_VOLTAGE = -1.0;
     public static final double HANDOFF_VOLTAGE = 4.0;
 
-    // Jam handling
+    // more jam handling constants
     public static final double JAM_REVERSE_VOLTAGE = -6.0;
     public static final double JAM_REVERSE_TIME = 0.2; // seconds
   }

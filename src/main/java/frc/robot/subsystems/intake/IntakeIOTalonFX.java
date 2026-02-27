@@ -1,3 +1,5 @@
+package frc.robot.subsystems.intake;
+
 import static frc.robot.Constants.IntakeConstants.*;
 
 import com.ctre.phoenix6.configs.*;
