@@ -43,8 +43,8 @@ public final class Constants {
 
   public static final class TransferConstants {
     // CAN IDs for the transfer motors
-    public static final int MOTOR1_ID = 20;
-    public static final int MOTOR2_ID = 21;
+    public static final int MOTOR1_ID = 60;
+    public static final int MOTOR2_ID = 61;
 
     // Inversions (set true if motors are mounted opposite directions)
     public static final boolean MOTOR1_INVERTED = false;
@@ -54,7 +54,7 @@ public final class Constants {
     public static final double STATOR_LIMIT_AMPS = 40.0;
 
     // Optional: voltage constants for forward/backward if needed
-    public static final double FORWARD_VOLTAGE = 12.0;
-    public static final double BACKWARD_VOLTAGE = -12.0;
+    public static final double FORWARD_VOLTAGE = 5.0;
+    public static final double BACKWARD_VOLTAGE = -5.0;
   }
 }

@@ -8,9 +8,7 @@ import frc.robot.subsystems.transfer.TransferIOTalonFX;
 
 public class RobotContainer {
 
-
   private final Transfer transfer;
-
 
   private final CommandXboxController controller = new CommandXboxController(0);
 
@@ -32,7 +30,6 @@ public class RobotContainer {
     // Left bumper = stop
     controller.leftBumper().onTrue(Commands.runOnce(transfer::stop, transfer));
   }
-
 
   public Command getAutonomousCommand() {
     return null;
