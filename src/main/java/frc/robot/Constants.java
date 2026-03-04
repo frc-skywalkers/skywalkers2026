@@ -33,11 +33,11 @@ public final class Constants {
     public static final double CRUISE_VELOCITY = 60.0;
     public static final double ACCELERATION = 120.0;
 
-    public static final double INTAKE_VOLTAGE = 10.0;
-    public static final double OUTTAKE_VOLTAGE = -8.0;
-    public static final double HANDOFF_VOLTAGE = 4.0;
+    public static final double INTAKE_VOLTAGE = 2.0;
+    public static final double OUTTAKE_VOLTAGE = -2.0;
+    public static final double HANDOFF_VOLTAGE = 2.0;
 
-    public static final double JAM_REVERSE_VOLTAGE = -6.0;
+    public static final double JAM_REVERSE_VOLTAGE = -2.0;
     public static final double JAM_REVERSE_TIME = 0.2;
   }
 
@@ -47,14 +47,14 @@ public final class Constants {
     public static final int MOTOR2_ID = 61;
 
     // Inversions (set true if motors are mounted opposite directions)
-    public static final boolean MOTOR1_INVERTED = false;
-    public static final boolean MOTOR2_INVERTED = true;
+    public static final boolean MOTOR1_INVERTED = true;
+    public static final boolean MOTOR2_INVERTED = false;
 
     // Current limit for both motors
     public static final double STATOR_LIMIT_AMPS = 40.0;
 
     // Optional: voltage constants for forward/backward if needed
-    public static final double FORWARD_VOLTAGE = 5.0;
-    public static final double BACKWARD_VOLTAGE = -5.0;
+    public static final double FORWARD_VOLTAGE = 2.0;
+    public static final double BACKWARD_VOLTAGE = -2.0;
   }
 }

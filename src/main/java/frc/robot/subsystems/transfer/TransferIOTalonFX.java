@@ -41,8 +41,8 @@ public class TransferIOTalonFX implements TransferIO {
 
   @Override
   public void setMotors(double speed) {
-    motor1.setControl(voltageControl.withOutput(speed * 12.0)); // convert -1.0..1.0 to volts
-    motor2.setControl(voltageControl.withOutput(speed * 12.0));
+    motor1.setControl(voltageControl.withOutput(speed * 8)); // convert -1.0..1.0 to volts
+    motor2.setControl(voltageControl.withOutput(speed * 8));
   }
 
   @Override

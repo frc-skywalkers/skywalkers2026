@@ -1,36 +1,39 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.transfer.Transfer;
 import frc.robot.subsystems.transfer.TransferIOTalonFX;
 
 public class RobotContainer {
 
+  // Subsystem
   private final Transfer transfer;
 
-  private final CommandXboxController controller = new CommandXboxController(0);
+  // Timer to delay start
+  private final Timer timer = new Timer();
 
   public RobotContainer() {
-
+    // Instantiate Transfer subsystem
     transfer = new Transfer(new TransferIOTalonFX());
 
-    // Configure button bindings
-    configureButtonBindings();
+    // Reset and start the timer
+    timer.reset();
+    timer.start();
+
+    // Default command: wait 3 seconds, then run forward continuously
+    transfer.setDefaultCommand(
+        Commands.run(
+            () -> {
+              if (timer.get() >= 10.0) { // wait 3 seconds
+                transfer.forward();
+              }
+            },
+            transfer));
   }
 
-  private void configureButtonBindings() {
-    // Y button = forward
-    controller.y().whileTrue(Commands.run(transfer::forward, transfer));
-
-    // Right bumper = backward
-    controller.rightBumper().whileTrue(Commands.run(transfer::backward, transfer));
-
-    // Left bumper = stop
-    controller.leftBumper().onTrue(Commands.runOnce(transfer::stop, transfer));
-  }
-
+  /** Autonomous command (none) */
   public Command getAutonomousCommand() {
     return null;
   }
