@@ -21,7 +21,7 @@ public class Outtake extends SubsystemBase {
 
   // presets
   public void ampScore() {
-    io.setVelocityRPM(OuttakeConstants.kAmpScoreRPM);
+    io.setVoltage(5.8);
   }
 
   public void feed() {

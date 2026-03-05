@@ -147,6 +147,11 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(Commands.run(outtake::ampScore, outtake)) // percent=0.6, 0.7
         .onFalse(Commands.runOnce(outtake::stop, outtake));
+
+    operator
+        .leftBumper()
+        .whileTrue(Commands.run(outtake::reverse, outtake))
+        .onFalse(Commands.runOnce(outtake::stop, outtake));
   }
 
   public Command getAutonomousCommand() {
