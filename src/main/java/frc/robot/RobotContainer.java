@@ -152,6 +152,11 @@ public class RobotContainer {
         .leftBumper()
         .whileTrue(Commands.run(outtake::reverse, outtake))
         .onFalse(Commands.runOnce(outtake::stop, outtake));
+
+    operator
+        .a()
+        .whileTrue(Commands.run(outtake::scoreWithVision, outtake))
+        .onFalse(Commands.runOnce(outtake::stop, outtake));
   }
 
   public Command getAutonomousCommand() {

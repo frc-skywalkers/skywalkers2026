@@ -57,6 +57,18 @@ public final class Constants {
     // gEAR-ratio:
     public static final double kGearRatio = 0.25;
 
+    // Limelight settings
+    public static final String LIMELIGHT_NAME = "limelight";
+
+    // geometry (meters)
+    public static final double LIMELIGHT_HEIGHT = 0.4318; // height of camera from floor
+    public static final double TARGET_HEIGHT = 1.8288; // april tag height
+    public static final double LIMELIGHT_ANGLE_DEG = 10.0; // mounting angle
+
+    // voltage limits
+    public static final double kMinVoltage = 4.5;
+    public static final double kMaxVoltage = 8.0;
+
     // logging pth
     public static final String kLoggingPath = "outtake/";
   }
