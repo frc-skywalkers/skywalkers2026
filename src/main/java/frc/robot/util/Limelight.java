@@ -19,13 +19,16 @@ public class Limelight {
 
   public static double getDistanceMeters() {
 
-    double ty = getTY();
+    double[] pose =
+        NetworkTableInstance.getDefault()
+            .getTable("limelight")
+            .getEntry("targetpose_robotspace")
+            .getDoubleArray(new double[6]);
 
-    double angle = Math.toRadians(OuttakeConstants.LIMELIGHT_ANGLE_DEG + ty);
+    double x = pose[0]; // forward/back from robot
+    double y = pose[1]; // left/right
+    double z = pose[2]; // up/down
 
-    double distance =
-        (OuttakeConstants.TARGET_HEIGHT - OuttakeConstants.LIMELIGHT_HEIGHT) / Math.tan(angle);
-
-    return distance;
+    return Math.sqrt(x * x + y * y + z * z);
   }
 }
