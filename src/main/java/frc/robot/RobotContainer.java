@@ -105,35 +105,38 @@ public class RobotContainer {
         break;
     }
 
-    // routines
+    
+    // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
+    // Set up SysId routines
     autoChooser.addOption(
         "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-
     autoChooser.addOption(
         "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-
     autoChooser.addOption(
         "Drive SysId (Quasistatic Forward)",
         drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-
     autoChooser.addOption(
         "Drive SysId (Quasistatic Reverse)",
         drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-
     autoChooser.addOption(
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
+    // Configure the button bindings
     configureButtonBindings();
   }
 
+  /**
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
   private void configureButtonBindings() {
-
-    // drive commands
+    // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
@@ -141,7 +144,7 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    // Hold A for field-oriented drive at 0 degrees (field-relative forward)
+    // Lock to 0° when A button is held
     controller
         .a()
         .whileTrue(
@@ -151,10 +154,10 @@ public class RobotContainer {
                 () -> -controller.getLeftX(),
                 () -> Rotation2d.kZero));
 
-    // X pattern
+    // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro
+    // Reset gyro to 0° when B button is pressed
     controller
         .b()
         .onTrue(
@@ -164,7 +167,6 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
-
     // operator right bumper to test outtake
     operator
         .rightBumper()
