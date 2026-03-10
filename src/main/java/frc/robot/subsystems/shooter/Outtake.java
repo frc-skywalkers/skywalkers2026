@@ -44,7 +44,7 @@ public class Outtake extends SubsystemBase {
 
   // presets
   public void ampScore() {
-    io.setVelocityRPM(OuttakeConstants.kFeedRPM);
+    io.setVelocityRPM(OuttakeConstants.kAmpScoreRPM);
   }
 
   public void feed() {
@@ -74,7 +74,7 @@ public class Outtake extends SubsystemBase {
   }
 
   public void runPercent(double percent) {
-    io.setVoltage(percent * 40.0); // 12.0, 12.5, 13.5, 16, 40
+    io.setVoltage(percent * 2.0); // 12.0, 12.5, 13.5, 16, 40
   }
 
   public void stop() {
