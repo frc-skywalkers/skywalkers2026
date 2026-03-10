@@ -19,7 +19,7 @@ public class Outtake extends SubsystemBase {
     // example tuning curve
     double voltage;
 
-    if (Limelight.getDistanceMeters() < 2.1) { 
+    if (Limelight.getDistanceMeters() < 2.1) {
       voltage = 5.4;
       System.out.println(Limelight.getDistanceMeters());
     } else if (Limelight.getDistanceMeters() < 2.5) {

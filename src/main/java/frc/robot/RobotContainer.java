@@ -71,13 +71,15 @@ public class RobotContainer {
 
         // prolly no sim (no time)
         outtake = new Outtake(new OuttakeIO() {});
-        transfer = new Transfer(new TransferIO() {
-            @Override
-            public void stopMotors() {}
-          
-            @Override
-            public void setMotors(double speed) {}
-          });
+        transfer =
+            new Transfer(
+                new TransferIO() {
+                  @Override
+                  public void stopMotors() {}
+
+                  @Override
+                  public void setMotors(double speed) {}
+                });
         break;
 
       default:
@@ -91,13 +93,15 @@ public class RobotContainer {
 
         // replay mode — no real IO, just log replay, so use empty IO implementations
         outtake = new Outtake(new OuttakeIO() {});
-        transfer = new Transfer(new TransferIO() {
-            @Override
-            public void stopMotors() {}
-          
-            @Override
-            public void setMotors(double speed) {}
-          });
+        transfer =
+            new Transfer(
+                new TransferIO() {
+                  @Override
+                  public void stopMotors() {}
+
+                  @Override
+                  public void setMotors(double speed) {}
+                });
         break;
     }
 
@@ -176,7 +180,7 @@ public class RobotContainer {
         .a()
         .whileTrue(Commands.run(outtake::scoreWithVision, outtake))
         .onFalse(Commands.runOnce(outtake::stop, outtake));
-    
+
     operator
         .x()
         .whileTrue(Commands.run(transfer::forward, transfer))
@@ -186,13 +190,9 @@ public class RobotContainer {
         .b()
         .whileTrue(Commands.run(transfer::backward, transfer))
         .onFalse(Commands.runOnce(transfer::stop, transfer));
-
-
-    
   }
 
   public Command getAutonomousCommand() {
     return autoChooser.get();
-    
   }
 }

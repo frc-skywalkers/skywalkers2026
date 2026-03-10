@@ -2,7 +2,6 @@ package frc.robot.subsystems.transfer;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 public class Transfer extends SubsystemBase {
 
   private final TransferIO m_io;
@@ -13,12 +12,12 @@ public class Transfer extends SubsystemBase {
 
   /** Run forward at full speed */
   public void forward() {
-    m_io.setMotors(1.0);
+    m_io.setMotors(0.1);
   }
 
   /** Run backward at full speed */
   public void backward() {
-    m_io.setMotors(-0.2);
+    m_io.setMotors(-0.05);
   }
 
   /** Stop transfer motors */
