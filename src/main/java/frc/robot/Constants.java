@@ -57,8 +57,8 @@ public final class Constants {
     public static final double kD = 0.0;
     public static final double kG = 0.25;
 
-    public static final double CRUISE_VELOCITY = 20.0;
-    public static final double ACCELERATION = 60.0;
+    public static final double CRUISE_VELOCITY = 10.0;
+    public static final double ACCELERATION = 3-.0;
 
     // roller volltages
     public static final double INTAKE_VOLTAGE = 1.0;
