@@ -8,6 +8,8 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
 
+
+
 public class IntakeIOTalonFX implements IntakeIO {
 
   private final TalonFX pivot = new TalonFX(PIVOT_ID);
@@ -18,6 +20,12 @@ public class IntakeIOTalonFX implements IntakeIO {
   public IntakeIOTalonFX() {
 
     TalonFXConfiguration config = new TalonFXConfiguration();
+    pivot.stopMotor();
+    CANcoderConfiguration ccConfig = new CANcoderConfiguration();
+
+
+    cancoder.getConfigurator().apply(ccConfig);
+
 
     config.MotorOutput.Inverted =
         PIVOT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
@@ -36,7 +44,8 @@ public class IntakeIOTalonFX implements IntakeIO {
     config.MotionMagic.MotionMagicAcceleration = ACCELERATION;
 
     config.Feedback.FeedbackRemoteSensorID = CANCODER_ID;
-    config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+    config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+
 
     pivot.getConfigurator().apply(config);
   }
@@ -47,11 +56,13 @@ public class IntakeIOTalonFX implements IntakeIO {
     inputs.pivotVelocity = pivot.getVelocity().getValueAsDouble();
     inputs.pivotAppliedVolts = pivot.getMotorVoltage().getValueAsDouble();
     inputs.pivotCurrent = pivot.getStatorCurrent().getValueAsDouble();
+    double rotations = cancoder.getAbsolutePosition().getValueAsDouble();
+    rotations = rotations % 1.0;  // keeps it between 0 and 1
   }
 
   @Override
   public void setPivotPositionDeg(double degrees) {
-    double rotations = degrees / 360.0;
+    double rotations = degrees / 360.0; //multiply by gear ratio
     pivot.setControl(motionMagic.withPosition(rotations));
   }
 

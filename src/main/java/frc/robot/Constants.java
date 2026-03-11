@@ -52,10 +52,10 @@ public final class Constants {
 
     // jam detection nums
 
-    public static final double kP = 60.0;
+    public static final double kP = 20.0;
     public static final double kI = 0.0;
-    public static final double kD = 2.0;
-    public static final double kG = 0.3;
+    public static final double kD = 0.0;
+    public static final double kG = 0.25;
 
     public static final double CRUISE_VELOCITY = 20.0;
     public static final double ACCELERATION = 60.0;

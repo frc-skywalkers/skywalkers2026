@@ -18,6 +18,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
+    System.out.println("Pivot Degrees: " + inputs.pivotPositionDeg);
   }
 
   public void intakePosition() {
