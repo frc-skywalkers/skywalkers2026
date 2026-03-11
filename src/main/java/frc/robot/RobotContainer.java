@@ -10,6 +10,8 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -169,8 +171,19 @@ public class RobotContainer {
     // operator right bumper to test outtake
     operator
         .rightBumper()
-        .whileTrue(Commands.run(outtake::ampScore, outtake)) // percent=0.6, 0.7
-        .onFalse(Commands.runOnce(outtake::stop, outtake));
+        .whileTrue(
+            Commands.sequence(
+                Commands.run(outtake::ampScore, outtake), // start outtake immediately
+                Commands.waitSeconds(1),
+                Commands.run(() -> {
+                    outtake.ampScore();
+                    transfer.forward();
+                }, outtake, transfer)))
+        .onFalse(
+            Commands.runOnce(() -> {
+                outtake.stop();
+                transfer.stop();
+            }, outtake, transfer));
 
     operator
         .leftBumper()
