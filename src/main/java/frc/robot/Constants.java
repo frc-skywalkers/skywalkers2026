@@ -43,17 +43,19 @@ public final class Constants {
     public static final double JAM_CURRENT_THRESHOLD = 35.0;
 
     // pivot (js guessing, pls check w design or sumn to see what they want)
-    public static final double STOWED_DEG = 0.0;
-    public static final double HANDOFF_DEG = 35.0;
-    public static final double DEPLOYED_DEG = 75.0;
+    public static final double INTAKE_DEG = 75.0;
+    public static final double DRIVE_DEG = 35.0;
+    public static final double STOW_DEG = 0.0;
 
     // jam detection nums
-    public static final double PIVOT_kP = 60.0;
-    public static final double PIVOT_kI = 0.0;
-    public static final double PIVOT_kD = 2.0;
-    public static final double PIVOT_kG = 0.3; // gravity feedforward
-    public static final double CRUISE_VELOCITY = 60.0; // rotations/sec
-    public static final double ACCELERATION = 120.0;
+
+    public static final double kP = 60.0;
+    public static final double kI = 0.0;
+    public static final double kD = 2.0;
+    public static final double kG = 0.3;
+
+    public static final double CRUISE_VELOCITY = 20.0;
+    public static final double ACCELERATION = 60.0;
 
     // roller volltages
     public static final double INTAKE_VOLTAGE = 1.0;

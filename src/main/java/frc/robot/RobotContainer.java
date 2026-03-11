@@ -170,14 +170,11 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // Y --> Deploy intake pivot
-    operator.y().onTrue(intake.deployCommand());
+    operator.b().onTrue(Commands.runOnce(() -> intake.intakePosition()));
 
-    // Left Bumper --> Stow intake pivot
-    operator.leftBumper().onTrue(intake.stowCommand());
+    operator.a().onTrue(Commands.runOnce(() -> intake.drivePosition()));
 
-    // Right Bumper --> Handoff position
-    operator.rightBumper().onTrue(intake.handoffCommand());
+    operator.y().onTrue(Commands.runOnce(() -> intake.stowPosition()));
   }
 
   /**

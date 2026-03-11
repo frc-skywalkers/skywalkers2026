@@ -11,67 +11,42 @@ import com.ctre.phoenix6.signals.*;
 public class IntakeIOTalonFX implements IntakeIO {
 
   private final TalonFX pivot = new TalonFX(PIVOT_ID);
-  private final TalonFX roller = new TalonFX(ROLLER_ID);
   private final CANcoder cancoder = new CANcoder(CANCODER_ID);
 
   private final MotionMagicVoltage motionMagic = new MotionMagicVoltage(0).withSlot(0);
 
-  private final VoltageOut rollerVoltage = new VoltageOut(0);
-
   public IntakeIOTalonFX() {
 
-    // === Pivot Config ===
-    TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
+    TalonFXConfiguration config = new TalonFXConfiguration();
 
-    pivotConfig.MotorOutput.Inverted =
+    config.MotorOutput.Inverted =
         PIVOT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
-    pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    pivotConfig.CurrentLimits.StatorCurrentLimit = STATOR_LIMIT_AMPS;
-    pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.StatorCurrentLimit = STATOR_LIMIT_AMPS;
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
 
-    pivotConfig.Slot0.kP = PIVOT_kP;
-    pivotConfig.Slot0.kI = PIVOT_kI;
-    pivotConfig.Slot0.kD = PIVOT_kD;
-    pivotConfig.Slot0.kG = PIVOT_kG;
+    config.Slot0.kP = 60;
+    config.Slot0.kI = 0;
+    config.Slot0.kD = 2;
+    config.Slot0.kG = 0.3;
 
-    pivotConfig.MotionMagic.MotionMagicCruiseVelocity = CRUISE_VELOCITY;
-    pivotConfig.MotionMagic.MotionMagicAcceleration = ACCELERATION;
+    config.MotionMagic.MotionMagicCruiseVelocity = CRUISE_VELOCITY;
+    config.MotionMagic.MotionMagicAcceleration = ACCELERATION;
 
-    // Use CANcoder as feedback
-    pivotConfig.Feedback.FeedbackRemoteSensorID = CANCODER_ID;
-    pivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+    config.Feedback.FeedbackRemoteSensorID = CANCODER_ID;
+    config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
 
-    pivot.getConfigurator().apply(pivotConfig);
-
-    // === Roller Config ===
-    TalonFXConfiguration rollerConfig = new TalonFXConfiguration();
-
-    rollerConfig.MotorOutput.Inverted =
-        ROLLER_INVERTED
-            ? InvertedValue.Clockwise_Positive
-            : InvertedValue.CounterClockwise_Positive;
-
-    rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-
-    rollerConfig.CurrentLimits.StatorCurrentLimit = STATOR_LIMIT_AMPS;
-    rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-
-    roller.getConfigurator().apply(rollerConfig);
+    pivot.getConfigurator().apply(config);
   }
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.pivotPositionDeg = cancoder.getAbsolutePosition().getValueAsDouble() * 360.0;
-
     inputs.pivotVelocity = pivot.getVelocity().getValueAsDouble();
     inputs.pivotAppliedVolts = pivot.getMotorVoltage().getValueAsDouble();
     inputs.pivotCurrent = pivot.getStatorCurrent().getValueAsDouble();
-
-    inputs.rollerVelocity = roller.getVelocity().getValueAsDouble();
-    inputs.rollerAppliedVolts = roller.getMotorVoltage().getValueAsDouble();
-    inputs.rollerCurrent = roller.getStatorCurrent().getValueAsDouble();
   }
 
   @Override
@@ -81,12 +56,7 @@ public class IntakeIOTalonFX implements IntakeIO {
   }
 
   @Override
-  public void setRollerVoltage(double volts) {
-    roller.setControl(rollerVoltage.withOutput(volts));
-  }
-
-  @Override
-  public void stopRoller() {
-    roller.stopMotor();
+  public void stopPivot() {
+    pivot.stopMotor();
   }
 }
