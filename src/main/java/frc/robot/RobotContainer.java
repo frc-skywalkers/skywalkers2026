@@ -24,31 +24,47 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.shooter.Outtake;
+import frc.robot.subsystems.shooter.OuttakeIO;
+import frc.robot.subsystems.shooter.OuttakeIOTalonFX;
+import frc.robot.subsystems.transfer.Transfer;
+import frc.robot.subsystems.transfer.TransferIO;
+import frc.robot.subsystems.transfer.TransferIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
+* This class is where the bulk of the robot should be declared. Since Command-based is a
+* "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+* periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+* subsystems, commands, and button mappings) should be declared here.
+*/
+
+
 public class RobotContainer {
-  // Subsystems
+
+  // subsystem
   private final Drive drive;
+  private final Outtake outtake;
+  private final Transfer transfer;
 
-  // Controller
+   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController operator = new CommandXboxController(1);
 
-  // Dashboard inputs
+  // dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-
+ 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
   public RobotContainer() {
+
     switch (Constants.currentMode) {
       case REAL:
-        // Real robot, instantiate hardware IO implementations
-        // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
-        // a CANcoder
+
+      // Real robot, instantiate hardware IO implementations
+       // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
+       // a CANcoder
+
         drive =
             new Drive(
                 new GyroIOPigeon2(),
@@ -57,27 +73,30 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
-        // The ModuleIOTalonFXS implementation provides an example implementation for
-        // TalonFXS controller connected to a CANdi with a PWM encoder. The
-        // implementations
-        // of ModuleIOTalonFX, ModuleIOTalonFXS, and ModuleIOSpark (from the Spark
-        // swerve
-        // template) can be freely intermixed to support alternative hardware
-        // arrangements.
-        // Please see the AdvantageKit template documentation for more information:
-        // https://docs.advantagekit.org/getting-started/template-projects/talonfx-swerve-template#custom-module-implementations
-        //
-        // drive =
-        // new Drive(
-        // new GyroIOPigeon2(),
-        // new ModuleIOTalonFXS(TunerConstants.FrontLeft),
-        // new ModuleIOTalonFXS(TunerConstants.FrontRight),
-        // new ModuleIOTalonFXS(TunerConstants.BackLeft),
-        // new ModuleIOTalonFXS(TunerConstants.BackRight));
+        outtake = new Outtake(new OuttakeIOTalonFX());
+        transfer = new Transfer(new TransferIOTalonFX());
         break;
+        // The ModuleIOTalonFXS implementation provides an example implementation for
+       // TalonFXS controller connected to a CANdi with a PWM encoder. The
+       // implementations
+       // of ModuleIOTalonFX, ModuleIOTalonFXS, and ModuleIOSpark (from the Spark
+       // swerve
+       // template) can be freely intermixed to support alternative hardware
+       // arrangements.
+       // Please see the AdvantageKit template documentation for more information:
+       // https://docs.advantagekit.org/getting-started/template-projects/talonfx-swerve-template#custom-module-implementations
+       //
+       // drive =
+       // new Drive(
+       // new GyroIOPigeon2(),
+       // new ModuleIOTalonFXS(TunerConstants.FrontLeft),
+       // new ModuleIOTalonFXS(TunerConstants.FrontRight),
+       // new ModuleIOTalonFXS(TunerConstants.BackLeft),
+       // new ModuleIOTalonFXS(TunerConstants.BackRight));
+
 
       case SIM:
-        // Sim robot, instantiate physics sim IO implementations
+      // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
                 new GyroIO() {},
@@ -85,10 +104,23 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
+
+        // prolly no sim (no time)
+        outtake = new Outtake(new OuttakeIO() {});
+        transfer =
+            new Transfer(
+                new TransferIO() {
+                  @Override
+                  public void stopMotors() {}
+
+                  @Override
+                  public void setMotors(double speed) {}
+                });
         break;
 
       default:
-        // Replayed robot, disable IO implementations
+      // Replayed robot, disable IO implementations
+
         drive =
             new Drive(
                 new GyroIO() {},
@@ -96,6 +128,18 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+
+        // replay mode — no real IO, just log replay, so use empty IO implementations
+        outtake = new Outtake(new OuttakeIO() {});
+        transfer =
+            new Transfer(
+                new TransferIO() {
+                  @Override
+                  public void stopMotors() {}
+
+                  @Override
+                  public void setMotors(double speed) {}
+                });
         break;
     }
 
@@ -160,13 +204,51 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
-  }
+    // operator right bumper to test outtake
+    operator
+        .rightBumper()
+        .whileTrue(
+            Commands.sequence(
+                Commands.run(outtake::ampScore, outtake), // start outtake immediately
+                Commands.waitSeconds(1),
+                Commands.run(() -> {
+                    outtake.ampScore();
+                    transfer.forward();
+                }, outtake, transfer)))
+        .onFalse(
+            Commands.runOnce(() -> {
+                outtake.stop();
+                transfer.stop();
+            }, outtake, transfer));
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+    operator
+        .leftBumper()
+        .whileTrue(Commands.run(outtake::reverse, outtake))
+        .onFalse(Commands.runOnce(outtake::stop, outtake));
+
+    operator
+        .a()
+        .whileTrue(Commands.run(outtake::scoreWithVision, outtake))
+        .onFalse(Commands.runOnce(outtake::stop, outtake));
+
+    operator
+        .x()
+        .whileTrue(Commands.run(transfer::forward, transfer))
+        .onFalse(Commands.runOnce(transfer::stop, transfer));
+
+    operator
+        .b()
+        .whileTrue(Commands.run(transfer::backward, transfer))
+        .onFalse(Commands.runOnce(transfer::stop, transfer));
+  }
+  
+   /**
+  * Use this to pass the autonomous command to the main {@link Robot} class.
+  *
+  * @return the command to run in autonomous
+  */
+
+
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
