@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -27,6 +28,9 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.shooter.Outtake;
 import frc.robot.subsystems.shooter.OuttakeIO;
 import frc.robot.subsystems.shooter.OuttakeIOTalonFX;
+// import frc.robot.subsystems.intake.Intake;
+// import frc.robot.subsystems.intake.IntakeIO;
+// import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.transfer.Transfer;
 import frc.robot.subsystems.transfer.TransferIO;
 import frc.robot.subsystems.transfer.TransferIOTalonFX;
@@ -46,6 +50,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Outtake outtake;
   private final Transfer transfer;
+//   private final Intake intake;
 
    // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -75,6 +80,8 @@ public class RobotContainer {
 
         outtake = new Outtake(new OuttakeIOTalonFX());
         transfer = new Transfer(new TransferIOTalonFX());
+
+        // intake = new Intake(new IntakeIOTalonFX());
         break;
         // The ModuleIOTalonFXS implementation provides an example implementation for
        // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -107,6 +114,7 @@ public class RobotContainer {
 
         // prolly no sim (no time)
         outtake = new Outtake(new OuttakeIO() {});
+        // intake = new Intake(new IntakeIO() {});
         transfer =
             new Transfer(
                 new TransferIO() {
@@ -143,6 +151,14 @@ public class RobotContainer {
         break;
     }
 
+    // NameCommands.registerCommand("intake in", Commands.run(intake::, transfer));
+    NamedCommands.registerCommand("shoot start", Commands.sequence(
+        Commands.run(outtake::ampScore, outtake), // start outtake immediately
+        Commands.waitSeconds(1),
+        Commands.run(() -> {
+            outtake.ampScore();
+            transfer.forward();
+        }, outtake, transfer)));
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
