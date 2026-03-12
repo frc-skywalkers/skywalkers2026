@@ -3,41 +3,67 @@ package frc.robot.subsystems.intake;
 import static frc.robot.Constants.IntakeConstants.*;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
-
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
+  // Track hold position
+  private double holdPositionDeg = 0.0;
+  private boolean isHolding = true;
+
   public Intake(IntakeIO io) {
     this.io = io;
-    io.stopPivot();
+    io.updateInputs(inputs);
+    holdPositionDeg = inputs.pivotPositionDeg; // start holding at current
+    io.setPivotPositionDeg(holdPositionDeg);
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+
+    // If no button is commanding, hold last position
+    if (isHolding) {
+      io.setPivotPositionDeg(holdPositionDeg);
+    }
+
     Logger.processInputs("Intake", inputs);
     System.out.println("Pivot Degrees: " + inputs.pivotPositionDeg);
   }
-
-  public void intakePosition() {
-    io.setPivotPositionDeg(122.6953125);
+  // Spins rollers at intake voltage
+  public void intakeRoller() {
+    io.setRollerVoltage(IntakeConstants.INTAKE_VOLTAGE); // 4 volts
   }
 
-  public void drivePosition() {
-    io.setPivotPositionDeg(35);
-    System.out.println(inputs.pivotPositionDeg);
+  // Stops rollers
+  public void stopRoller() {
+    io.setRollerVoltage(0.0);
   }
 
-  public void stowPosition() {
-    io.setPivotPositionDeg(122.6953125);
-    System.out.println(inputs.pivotPositionDeg);
+  // Combined: move pivot + intake roller
+  public void movePivotAndIntake(double degrees) {
+    setTargetPosition(degrees);
+    intakeRoller();
+  }
+
+  public void setTargetPosition(double degrees) {
+    holdPositionDeg = degrees;
+    io.setPivotPositionDeg(degrees);
+    isHolding = true; // start holding after motion
+  }
+
+  public void holdCurrentPosition() {
+    io.updateInputs(inputs);
+    holdPositionDeg = inputs.pivotPositionDeg;
+    io.setPivotPositionDeg(holdPositionDeg);
   }
 
   public void stop() {
-    io.stopPivot();
-    System.out.println(inputs.pivotPositionDeg);
+    holdPositionDeg = 35;
+    io.setPivotPositionDeg(holdPositionDeg);
+    holdCurrentPosition(); // replace stop with active hold
   }
 }

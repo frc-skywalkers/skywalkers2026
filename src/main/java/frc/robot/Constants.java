@@ -39,7 +39,7 @@ public final class Constants {
 
     // inversion settings (IDK IM JS GUESSING PLS TUNE)
     public static final boolean PIVOT_INVERTED = true;
-    public static final boolean ROLLER_INVERTED = false;
+    public static final boolean ROLLER_INVERTED = true;
 
     // current lims
     public static final double STATOR_LIMIT_AMPS = 40.0;
@@ -59,7 +59,7 @@ public final class Constants {
     public static final double ACCELERATION = 30.0;
 
     // roller volltages
-    public static final double INTAKE_VOLTAGE = 1.0;
+    public static final double INTAKE_VOLTAGE = 4.2;
     public static final double OUTTAKE_VOLTAGE = -1.0;
     public static final double HANDOFF_VOLTAGE = 4.0;
 

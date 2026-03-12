@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.*;
 public class IntakeIOTalonFX implements IntakeIO {
 
   private final TalonFX pivot = new TalonFX(PIVOT_ID);
+  private final TalonFX roller = new TalonFX(ROLLER_ID);
   private final CANcoder cancoder = new CANcoder(CANCODER_ID);
 
   private final MotionMagicVoltage motionMagic = new MotionMagicVoltage(0).withSlot(0);
@@ -18,7 +19,6 @@ public class IntakeIOTalonFX implements IntakeIO {
   public IntakeIOTalonFX() {
 
     TalonFXConfiguration config = new TalonFXConfiguration();
-    pivot.stopMotor();
     pivot.setControl(new NeutralOut()); // <-- important
     CANcoderConfiguration ccConfig = new CANcoderConfiguration();
 
@@ -32,10 +32,10 @@ public class IntakeIOTalonFX implements IntakeIO {
     config.CurrentLimits.StatorCurrentLimit = STATOR_LIMIT_AMPS;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
 
-    config.Slot0.kP = 60;
+    config.Slot0.kP = 11; // start low
     config.Slot0.kI = 0;
-    config.Slot0.kD = 2;
-    config.Slot0.kG = 0.3;
+    config.Slot0.kD = 0.3; // small damping
+    config.Slot0.kG = -0.2; // gravity feedforward
 
     config.MotionMagic.MotionMagicCruiseVelocity = CRUISE_VELOCITY;
     config.MotionMagic.MotionMagicAcceleration = ACCELERATION;
@@ -44,6 +44,7 @@ public class IntakeIOTalonFX implements IntakeIO {
     config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
 
     pivot.getConfigurator().apply(config);
+    roller.getConfigurator().apply(config);
   }
 
   @Override
@@ -63,7 +64,13 @@ public class IntakeIOTalonFX implements IntakeIO {
   }
 
   @Override
+  public void setRollerVoltage(double volts) {
+    roller.setControl(new VoltageOut(volts));
+  }
+
+  @Override
   public void stopPivot() {
+
     pivot.stopMotor();
   }
 }

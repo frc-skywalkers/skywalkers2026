@@ -172,14 +172,19 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    operator.b().onTrue(Commands.runOnce(() -> intake.intakePosition()));
-
-    operator.a().onTrue(Commands.runOnce(() -> intake.drivePosition()));
+    // operator.b().onTrue(Commands.runOnce(() -> intake.setTargetPosition(122.695), intake));
+    operator.b().onTrue(Commands.runOnce(() -> intake.setTargetPosition(35), intake));
 
     operator
+        .a()
+        .whileTrue(new RunCommand(() -> intake.intakeRoller(), intake))
+        .onFalse(new InstantCommand(() -> intake.stopRoller(), intake));
+
+    // Y button: move to intake while pressed, hold when released
+    operator
         .y()
-        .onTrue(new RunCommand(() -> intake.intakePosition(), intake))
-        .onFalse(new InstantCommand(() -> intake.stop(), intake));
+        .whileTrue(new RunCommand(() -> intake.setTargetPosition(122.695), intake))
+        .onFalse(new InstantCommand(() -> intake.holdCurrentPosition(), intake));
   }
 
   /**
