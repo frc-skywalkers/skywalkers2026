@@ -74,7 +74,7 @@ public class Outtake extends SubsystemBase {
   }
 
   public void runPercent(double percent) {
-    io.setVoltage(percent * 2.0); // 12.0, 12.5, 13.5, 16, 40
+    io.setVoltage(percent * 12.0); // 12.0, 12.5, 13.5, 16, 40
   }
 
   public void stop() {
