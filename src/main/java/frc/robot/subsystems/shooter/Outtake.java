@@ -15,21 +15,28 @@ public class Outtake extends SubsystemBase {
   }
 
   private double calculateVoltage(double distance) {
-
+    double banana = 0;
     // example tuning curve
     double voltage;
 
-    if (Limelight.getDistanceMeters() < 2.1) {
-      voltage = 5.4;
+    if (Limelight.getDistanceMeters() < 1.8) {
+      voltage = 4400;
+      banana = 1;
       System.out.println(Limelight.getDistanceMeters());
-    } else if (Limelight.getDistanceMeters() < 2.5) {
-      voltage = 5.88;
+    } else if (Limelight.getDistanceMeters() < 2.45) {
+      voltage = 4800;
+      banana = 1;
       System.out.println(Limelight.getDistanceMeters());
     } else if (Limelight.getDistanceMeters() < 2.8) {
-      voltage = 6.3;
+      voltage = 0;
+      banana = 1;
+      System.out.println(Limelight.getDistanceMeters());
+    } else if (banana <= 0) {
+      voltage = 0;
+      banana = 1;
       System.out.println(Limelight.getDistanceMeters());
     } else {
-      voltage = 0;
+      voltage = 4800;
       System.out.println(Limelight.getDistanceMeters());
     }
 
@@ -70,7 +77,7 @@ public class Outtake extends SubsystemBase {
 
     double voltage = calculateVoltage(distance);
 
-    io.setVoltage(voltage);
+    io.setVelocityRPM(voltage);
   }
 
   public void runPercent(double percent) {

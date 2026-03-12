@@ -84,7 +84,7 @@ public final class Constants {
     public static final double kSupplyCurrentLimit = 80.0; // 40.0, 43.0, 60
 
     // velocity setpoints WILL TUNE FS
-    public static final double kAmpScoreRPM = 4000; // 5000.0, 6000.0, 8000,0, 10000 //6000
+    public static final double kAmpScoreRPM = 4800; // 5000.0, 6000.0, 8000,0, 10000 //6000
     public static final double kFeedRPM = 2400.0; // 1200
     public static final double kReverseRPM = -2000.0;
     public static final double kIdleHoldRPM = 300.0;
@@ -124,7 +124,7 @@ public final class Constants {
     public static final double STATOR_LIMIT_AMPS = 40.0;
 
     // Optional: voltage constants for forward/backward if needed
-    public static final double FORWARD_VOLTAGE = 2.0;
+    public static final double FORWARD_VOLTAGE = 4.5;
     public static final double BACKWARD_VOLTAGE = -2.0;
   }
 }
