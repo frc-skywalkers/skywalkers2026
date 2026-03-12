@@ -65,6 +65,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
         intake = new Intake(new IntakeIOTalonFX());
+        intake.setTargetPosition(30);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -182,9 +183,21 @@ public class RobotContainer {
 
     // Y button: move to intake while pressed, hold when released
     operator
-        .y()
-        .whileTrue(new RunCommand(() -> intake.setTargetPosition(122.695), intake))
-        .onFalse(new InstantCommand(() -> intake.holdCurrentPosition(), intake));
+    .y()
+    .whileTrue(
+        new RunCommand(
+            () -> {
+              intake.setTargetPosition(122.695);
+              intake.intakeRoller();
+            },
+            intake))
+    .onFalse(
+        new InstantCommand(
+            () -> {
+              intake.stopRoller();
+              intake.holdCurrentPosition();
+            },
+            intake));
   }
 
   /**
