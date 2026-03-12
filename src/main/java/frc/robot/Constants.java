@@ -67,7 +67,7 @@ public final class Constants {
     public static final double JAM_REVERSE_VOLTAGE = -6.0;
     public static final double JAM_REVERSE_TIME = 0.2; // seconds
   }
-  
+
   public static final class OuttakeConstants {
 
     // can
@@ -84,7 +84,7 @@ public final class Constants {
     public static final double kSupplyCurrentLimit = 80.0; // 40.0, 43.0, 60
 
     // velocity setpoints WILL TUNE FS
-    public static final double kAmpScoreRPM = 000.0; // 5000.0, 6000.0, 8000,0, 10000 //6000
+    public static final double kAmpScoreRPM = 6000; // 5000.0, 6000.0, 8000,0, 10000 //6000
     public static final double kFeedRPM = 2400.0; // 1200
     public static final double kReverseRPM = -2000.0;
     public static final double kIdleHoldRPM = 300.0;
