@@ -7,6 +7,10 @@ import org.littletonrobotics.junction.Logger;
 
 public class Outtake extends SubsystemBase {
 
+  private double lastSeenTime = 0;
+  private double lastDistance = 0;
+  private static final double VISION_TIMEOUT = 1.0;
+
   private final OuttakeIO io;
   private final OuttakeIOInputsAutoLogged inputs = new OuttakeIOInputsAutoLogged();
 
@@ -65,20 +69,43 @@ public class Outtake extends SubsystemBase {
   public void idleHold() {
     io.setVelocityRPM(OuttakeConstants.kIdleHoldRPM);
   }
-
   public void scoreWithVision() {
 
-    if (!Limelight.hasTarget()) {
+    double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
+  
+    // If we see a tag, update memory
+    if (Limelight.hasTarget()) {
+      lastSeenTime = currentTime;
+      lastDistance = Limelight.getDistanceMeters();
+    }
+  
+    // If we haven't seen a tag recently, stop
+    if (currentTime - lastSeenTime > VISION_TIMEOUT) {
       stop();
       return;
     }
-
+  
+    // Use last known distance
     double distance = Limelight.getDistanceMeters();
 
-    double voltage = calculateVoltage(distance);
-
+    double voltage = calculateVoltage(lastDistance);
+  
     io.setVelocityRPM(voltage);
   }
+
+  // public void scoreWithVision() {
+
+  //   if (!Limelight.hasTarget()) {
+  //     stop();
+  //     return;
+  //   }
+
+  //   double distance = Limelight.getDistanceMeters();
+
+  //   double voltage = calculateVoltage(distance);
+
+  //   io.setVelocityRPM(voltage);
+  // }
 
   public void runPercent(double percent) {
     io.setVoltage(percent * 12.0); // 12.0, 12.5, 13.5, 16, 40
