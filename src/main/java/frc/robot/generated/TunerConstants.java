@@ -25,9 +25,9 @@ import edu.wpi.first.units.measure.*;
 public class TunerConstants {
 
   // private static final double kDriveGearRatio = 7.363636363636365;
-  private static final double kDriveGearRatio = 6.746031746;
+  private static final double kDriveGearRatio = 6.53846; // 6.746031746;
   // private static final double kSteerGearRatio = 15.42857142857143;
-  private static final double kSteerGearRatio = 150.0 / 7.0;
+  private static final double kSteerGearRatio = 15.42; // 150.0 / 7.0;
   private static final Distance kWheelRadius = Inches.of(2); // 2.167
 
   // Both sets of gains need to be tuned to your individual robot.
@@ -102,7 +102,7 @@ public class TunerConstants {
 
   // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
   // This may need to be tuned to your individual robot
-  private static final double kCoupleRatio = 3.0; // 3.8181818181818183
+  private static final double kCoupleRatio = 2.; // 3.8181818181818183
 
   private static final boolean kInvertLeftSide = false;
   private static final boolean kInvertRightSide = true;
@@ -110,8 +110,8 @@ public class TunerConstants {
   private static final int kPigeonId = 13;
 
   // These are only used for simulation
-  private static final MomentOfInertia kSteerInertia = KilogramSquareMeters.of(0.004);
-  private static final MomentOfInertia kDriveInertia = KilogramSquareMeters.of(0.025);
+  private static final MomentOfInertia kSteerInertia = KilogramSquareMeters.of(0.01); // 0.004
+  private static final MomentOfInertia kDriveInertia = KilogramSquareMeters.of(0.01); // 0.025
   // Simulated voltage necessary to overcome friction
   private static final Voltage kSteerFrictionVoltage = Volts.of(0.2);
   private static final Voltage kDriveFrictionVoltage = Volts.of(0.2);
@@ -157,7 +157,7 @@ public class TunerConstants {
   private static final int kFrontLeftSteerMotorId = 5;
   private static final int kFrontLeftEncoderId = 6;
   private static final Angle kFrontLeftEncoderOffset =
-      Radians.of(2.545 - Math.PI / 2); // Added these encoder offset values
+      Radians.of(2.545 - Math.PI / 2 + Math.PI / 2); // Added these encoder offset values
   // private static final Angle kFrontLeftEncoderOffset = Radians.of(-1.388 + Math.PI - Math.PI /
   // 2); (last value)
   // Radians.of(-3.528 + Math.PI/2); (last yr)
@@ -177,7 +177,7 @@ public class TunerConstants {
   private static final int kFrontRightSteerMotorId = 8;
   private static final int kFrontRightEncoderId = 9;
   private static final Angle kFrontRightEncoderOffset =
-      Radians.of(-1.03 - Math.PI / 2 + Math.PI); // Added these encoder offset values
+      Radians.of(-1.03 - Math.PI / 2 + Math.PI + Math.PI / 2); // Added these encoder offset values
   // rivate static final Angle kFrontRightEncoderOffset = Radians.of(-1.03 - Math.PI/2);
   // private static final Angle kFrontRightEncoderOffset = Radians.of(-3.528 - Math.PI / 2); (last
   // value)
@@ -197,7 +197,12 @@ public class TunerConstants {
   private static final int kBackLeftSteerMotorId = 2;
   private static final int kBackLeftEncoderId = 3;
   private static final Angle kBackLeftEncoderOffset =
-      Radians.of(0.02 + Math.PI + Math.PI / 2 - Math.PI / 2); // Added these encoder offset values
+      Radians.of(
+          0.02
+              + Math.PI
+              + Math.PI / 2
+              - Math.PI / 2
+              + Math.PI / 2); // Added these encoder offset values
   // private static final Angle kBackLeftEncoderOffset = Radians.of(0.02 + Math.PI / 2 - Math.PI/2);
   // private static final Angle kBackLeftEncoderOffset = Radians.of(6.648 - Math.PI / 2); (last
   // value)
@@ -217,7 +222,7 @@ public class TunerConstants {
   private static final int kBackRightSteerMotorId = 11;
   private static final int kBackRightEncoderId = 12;
   private static final Angle kBackRightEncoderOffset =
-      Radians.of(0.272 - Math.PI - Math.PI / 2); // Added these encoder offset values
+      Radians.of(0.272 - Math.PI - Math.PI / 2 + Math.PI / 2); // Added these encoder offset values
   // private static final Angle kBackRightEncoderOffset = Radians.of(-0.913 + Math.PI - Math.PI /
   // 2); (last value)
   // private static final Angle kBackRightEncoderOffset = Rotations.of(0.17236328125);
