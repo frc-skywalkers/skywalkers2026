@@ -223,26 +223,20 @@ public class RobotContainer {
                 .ignoringDisable(true));
     // operator right bumper to test outtake
     operator
-        .rightBumper()
-        .whileTrue(
-            Commands.sequence(
-                Commands.run(outtake::ampScore, outtake), // start outtake immediately
-                Commands.waitSeconds(1),
-                Commands.run(
-                    () -> {
-                      outtake.ampScore();
-                      transfer.forward();
-                    },
-                    outtake,
-                    transfer)))
-        .onFalse(
-            Commands.runOnce(
-                () -> {
-                  outtake.stop();
-                  transfer.stop();
-                },
-                outtake,
-                transfer));
+    .rightBumper()
+    .whileTrue(
+        Commands.sequence(
+            Commands.runOnce(outtake::ampScore, outtake),
+            Commands.waitSeconds(1.2),
+            Commands.run(transfer::forward, transfer)))
+    .onFalse(
+        Commands.runOnce(
+            () -> {
+                outtake.stop();
+                transfer.stop();
+            },
+            outtake,
+            transfer));
 
     operator
         .leftBumper()
