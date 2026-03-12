@@ -12,6 +12,7 @@ public class Intake extends SubsystemBase {
 
   public Intake(IntakeIO io) {
     this.io = io;
+    io.stopPivot();
   }
 
   @Override
@@ -22,7 +23,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakePosition() {
-    io.setPivotPositionDeg(73);
+    io.setPivotPositionDeg(122.6953125);
   }
 
   public void drivePosition() {
@@ -31,7 +32,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void stowPosition() {
-    io.setPivotPositionDeg(108);
+    io.setPivotPositionDeg(122.6953125);
     System.out.println(inputs.pivotPositionDeg);
   }
 
