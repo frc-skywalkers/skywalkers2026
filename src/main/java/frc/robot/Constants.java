@@ -67,7 +67,7 @@ public final class Constants {
     public static final double JAM_REVERSE_VOLTAGE = -6.0;
     public static final double JAM_REVERSE_TIME = 0.2; // seconds
   }
-  
+
   public static final class OuttakeConstants {
 
     // can
