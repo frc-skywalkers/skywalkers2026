@@ -69,27 +69,28 @@ public class Outtake extends SubsystemBase {
   public void idleHold() {
     io.setVelocityRPM(OuttakeConstants.kIdleHoldRPM);
   }
+
   public void scoreWithVision() {
 
     double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-  
+
     // If we see a tag, update memory
     if (Limelight.hasTarget()) {
       lastSeenTime = currentTime;
       lastDistance = Limelight.getDistanceMeters();
     }
-  
+
     // If we haven't seen a tag recently, stop
     if (currentTime - lastSeenTime > VISION_TIMEOUT) {
       stop();
       return;
     }
-  
+
     // Use last known distance
     double distance = Limelight.getDistanceMeters();
 
     double voltage = calculateVoltage(lastDistance);
-  
+
     io.setVelocityRPM(voltage);
   }
 
