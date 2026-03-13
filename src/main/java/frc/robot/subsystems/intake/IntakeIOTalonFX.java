@@ -16,77 +16,61 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   private final MotionMagicVoltage motionMagic = new MotionMagicVoltage(0).withSlot(0);
 
-  private final VoltageOut rollerVoltage = new VoltageOut(0);
-
   public IntakeIOTalonFX() {
 
-    // === Pivot Config ===
-    TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
+    TalonFXConfiguration config = new TalonFXConfiguration();
+    pivot.setControl(new NeutralOut()); // <-- important
+    CANcoderConfiguration ccConfig = new CANcoderConfiguration();
 
-    pivotConfig.MotorOutput.Inverted =
+    cancoder.getConfigurator().apply(ccConfig);
+
+    config.MotorOutput.Inverted =
         PIVOT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
-    pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    pivotConfig.CurrentLimits.StatorCurrentLimit = STATOR_LIMIT_AMPS;
-    pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.StatorCurrentLimit = STATOR_LIMIT_AMPS;
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
 
-    pivotConfig.Slot0.kP = PIVOT_kP;
-    pivotConfig.Slot0.kI = PIVOT_kI;
-    pivotConfig.Slot0.kD = PIVOT_kD;
-    pivotConfig.Slot0.kG = PIVOT_kG;
+    config.Slot0.kP = 11; // start low
+    config.Slot0.kI = 0;
+    config.Slot0.kD = 0.3; // small damping
+    config.Slot0.kG = -0.2; // gravity feedforward
 
-    pivotConfig.MotionMagic.MotionMagicCruiseVelocity = CRUISE_VELOCITY;
-    pivotConfig.MotionMagic.MotionMagicAcceleration = ACCELERATION;
+    config.MotionMagic.MotionMagicCruiseVelocity = CRUISE_VELOCITY;
+    config.MotionMagic.MotionMagicAcceleration = ACCELERATION;
 
-    // Use CANcoder as feedback
-    pivotConfig.Feedback.FeedbackRemoteSensorID = CANCODER_ID;
-    pivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+    config.Feedback.FeedbackRemoteSensorID = CANCODER_ID;
+    config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
 
-    pivot.getConfigurator().apply(pivotConfig);
-
-    // === Roller Config ===
-    TalonFXConfiguration rollerConfig = new TalonFXConfiguration();
-
-    rollerConfig.MotorOutput.Inverted =
-        ROLLER_INVERTED
-            ? InvertedValue.Clockwise_Positive
-            : InvertedValue.CounterClockwise_Positive;
-
-    rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-
-    rollerConfig.CurrentLimits.StatorCurrentLimit = STATOR_LIMIT_AMPS;
-    rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-
-    roller.getConfigurator().apply(rollerConfig);
+    pivot.getConfigurator().apply(config);
+    roller.getConfigurator().apply(config);
   }
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.pivotPositionDeg = cancoder.getAbsolutePosition().getValueAsDouble() * 360.0;
-
     inputs.pivotVelocity = pivot.getVelocity().getValueAsDouble();
     inputs.pivotAppliedVolts = pivot.getMotorVoltage().getValueAsDouble();
     inputs.pivotCurrent = pivot.getStatorCurrent().getValueAsDouble();
-
-    inputs.rollerVelocity = roller.getVelocity().getValueAsDouble();
-    inputs.rollerAppliedVolts = roller.getMotorVoltage().getValueAsDouble();
-    inputs.rollerCurrent = roller.getStatorCurrent().getValueAsDouble();
+    double rotations = cancoder.getAbsolutePosition().getValueAsDouble();
+    rotations = rotations % 1.0; // keeps it between 0 and 1
   }
 
   @Override
   public void setPivotPositionDeg(double degrees) {
-    double rotations = degrees / 360.0;
+    double rotations = degrees / 360.0; // multiply by gear ratio
     pivot.setControl(motionMagic.withPosition(rotations));
   }
 
   @Override
   public void setRollerVoltage(double volts) {
-    roller.setControl(rollerVoltage.withOutput(volts));
+    roller.setControl(new VoltageOut(volts));
   }
 
   @Override
-  public void stopRoller() {
-    roller.stopMotor();
+  public void stopPivot() {
+
+    pivot.stopMotor();
   }
 }

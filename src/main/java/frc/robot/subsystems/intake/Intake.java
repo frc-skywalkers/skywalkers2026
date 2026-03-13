@@ -2,106 +2,68 @@ package frc.robot.subsystems.intake;
 
 import static frc.robot.Constants.IntakeConstants.*;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
-
-  public enum IntakeState {
-    IDLE,
-    STOWED,
-    DEPLOYED,
-    INTAKING,
-    OUTTAKING,
-    HANDOFF,
-    STOPPED
-  }
-
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
-  private IntakeState state = IntakeState.STOWED;
-  // private IntakeState state = IntakeState.IDLE;
-
-  private final Timer jamTimer = new Timer();
-  private boolean reversingForJam = false;
+  // Track hold position
+  private double holdPositionDeg = 0.0;
+  private boolean isHolding = true;
 
   public Intake(IntakeIO io) {
     this.io = io;
+    io.updateInputs(inputs);
+    holdPositionDeg = inputs.pivotPositionDeg; // start holding at current
+    io.setPivotPositionDeg(holdPositionDeg);
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+
+    // If no button is commanding, hold last position
+    if (isHolding) {
+      io.setPivotPositionDeg(holdPositionDeg);
+    }
+
     Logger.processInputs("Intake", inputs);
-
-    handleState();
-    handleJamDetection();
+    System.out.println("Pivot Degrees: " + inputs.pivotPositionDeg);
+  }
+  // Spins rollers at intake voltage
+  public void intakeRoller() {
+    io.setRollerVoltage(IntakeConstants.INTAKE_VOLTAGE); // 4 volts
   }
 
-  private void handleState() {
-    switch (state) {
-      case IDLE -> {
-        io.stopRoller();
-      }
-
-      case STOWED -> {
-        io.setPivotPositionDeg(STOWED_DEG);
-        io.stopRoller();
-      }
-
-      case DEPLOYED -> {
-        io.setPivotPositionDeg(DEPLOYED_DEG);
-        io.stopRoller();
-      }
-    }
+  // Stops rollers
+  public void stopRoller() {
+    io.setRollerVoltage(0.0);
   }
 
-  private void handleJamDetection() {
-
-    if (state == IntakeState.INTAKING && !reversingForJam) {
-      if (inputs.rollerCurrent > JAM_CURRENT_THRESHOLD && Math.abs(inputs.rollerVelocity) < 5.0) {
-
-        reversingForJam = true;
-        jamTimer.restart();
-        io.setRollerVoltage(JAM_REVERSE_VOLTAGE);
-      }
-    }
-
-    if (reversingForJam) {
-      if (jamTimer.hasElapsed(JAM_REVERSE_TIME)) {
-        reversingForJam = false;
-        io.setRollerVoltage(INTAKE_VOLTAGE);
-      }
-    }
-
-    inputs.jamDetected = reversingForJam;
+  // Combined: move pivot + intake roller
+  public void movePivotAndIntake(double degrees) {
+    setTargetPosition(degrees);
+    intakeRoller();
   }
 
-  public void setState(IntakeState newState) {
-    state = newState;
+  public void setTargetPosition(double degrees) {
+    holdPositionDeg = degrees;
+    io.setPivotPositionDeg(degrees);
+    isHolding = true; // start holding after motion
   }
 
-  // Command factories
-
-  public Command intakeCommand() {
-    return run(() -> setState(IntakeState.INTAKING));
+  public void holdCurrentPosition() {
+    io.updateInputs(inputs);
+    holdPositionDeg = inputs.pivotPositionDeg;
+    io.setPivotPositionDeg(holdPositionDeg);
   }
 
-  public Command outtakeCommand() {
-    return run(() -> setState(IntakeState.OUTTAKING));
-  }
-
-  public Command deployCommand() {
-    return runOnce(() -> setState(IntakeState.DEPLOYED));
-  }
-
-  public Command stowCommand() {
-    return runOnce(() -> setState(IntakeState.STOWED));
-  }
-
-  public Command handoffCommand() {
-    return runOnce(() -> setState(IntakeState.HANDOFF));
+  public void stop() {
+    holdPositionDeg = 35;
+    io.setPivotPositionDeg(holdPositionDeg);
+    holdCurrentPosition(); // replace stop with active hold
   }
 }
