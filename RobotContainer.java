@@ -8,13 +8,12 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
@@ -25,15 +24,6 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.IntakeIO;
-import frc.robot.subsystems.intake.IntakeIOTalonFX;
-import frc.robot.subsystems.shooter.Outtake;
-import frc.robot.subsystems.shooter.OuttakeIO;
-import frc.robot.subsystems.shooter.OuttakeIOTalonFX;
-import frc.robot.subsystems.transfer.Transfer;
-import frc.robot.subsystems.transfer.TransferIO;
-import frc.robot.subsystems.transfer.TransferIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -43,31 +33,22 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
-  // subsystem
+  // Subsystems
   private final Drive drive;
-  private final Outtake outtake;
-  private final Transfer transfer;
-  private final Intake intake;
-  //   private final Intake intake;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
-  //   private final CommandXboxController operator = new CommandXboxController(1);
 
-  // dashboard inputs
+  // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
     switch (Constants.currentMode) {
       case REAL:
-
         // Real robot, instantiate hardware IO implementations
         // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
         // a CANcoder
-
         drive =
             new Drive(
                 new GyroIOPigeon2(),
@@ -76,13 +57,6 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
-        outtake = new Outtake(new OuttakeIOTalonFX());
-        intake = new Intake(new IntakeIOTalonFX());
-        intake.setTargetPosition(30);
-        transfer = new Transfer(new TransferIOTalonFX());
-
-        // intake = new Intake(new IntakeIOTalonFX());
-        break;
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
         // implementations
@@ -100,6 +74,7 @@ public class RobotContainer {
         // new ModuleIOTalonFXS(TunerConstants.FrontRight),
         // new ModuleIOTalonFXS(TunerConstants.BackLeft),
         // new ModuleIOTalonFXS(TunerConstants.BackRight));
+        break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
@@ -110,25 +85,10 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-
-        // prolly no sim (no time)
-        outtake = new Outtake(new OuttakeIO() {});
-        intake = new Intake(new IntakeIO() {});
-        // intake = new Intake(new IntakeIO() {});
-        transfer =
-            new Transfer(
-                new TransferIO() {
-                  @Override
-                  public void stopMotors() {}
-
-                  @Override
-                  public void setMotors(double speed) {}
-                });
         break;
 
       default:
         // Replayed robot, disable IO implementations
-
         drive =
             new Drive(
                 new GyroIO() {},
@@ -136,35 +96,9 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-
-        // replay mode — no real IO, just log replay, so use empty IO implementations
-        outtake = new Outtake(new OuttakeIO() {});
-        intake = new Intake(new IntakeIO() {});
-        transfer =
-            new Transfer(
-                new TransferIO() {
-                  @Override
-                  public void stopMotors() {}
-
-                  @Override
-                  public void setMotors(double speed) {}
-                });
         break;
     }
 
-    // NameCommands.registerCommand("intake in", Commands.run(intake::, transfer));
-    NamedCommands.registerCommand(
-        "shoot start",
-        Commands.sequence(
-            Commands.run(outtake::ampScore, outtake), // start outtake immediately
-            Commands.waitSeconds(1),
-            Commands.run(
-                () -> {
-                  outtake.ampScore();
-                  transfer.forward();
-                },
-                outtake,
-                transfer)));
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -204,83 +138,28 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
-    // controller
-    //     .a()
-    //     .whileTrue(
-    //         DriveCommands.joystickDriveAtAngle(
-    //             drive,
-    //             () -> -controller.getLeftY(),
-    //             () -> -controller.getLeftX(),
-    //             () -> Rotation2d.kZero));
+    controller
+        .a()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
+                () -> Rotation2d.kZero));
 
     // Switch to X pattern when X button is pressed
-    // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // // Reset gyro to 0° when B button is pressed
-    // controller
-    //     .b()
-    //     .onTrue(
-    //         Commands.runOnce(
-    //                 () ->
-    //                     drive.setPose(
-    //                         new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-    //                 drive)
-    //             .ignoringDisable(true));
-    // operator right bumper to test outtake
+    // Reset gyro to 0° when B button is pressed
     controller
-        .rightBumper()
-        .whileTrue(
-            Commands.sequence(
-                Commands.runOnce(outtake::scoreWithVision, outtake),
-                Commands.waitSeconds(1.2),
-                Commands.run(transfer::forward, transfer)))
-        .onFalse(
+        .b()
+        .onTrue(
             Commands.runOnce(
-                () -> {
-                  outtake.stop();
-                  transfer.stop();
-                },
-                outtake,
-                transfer));
-
-    controller
-        .leftBumper()
-        .whileTrue(Commands.run(outtake::reverse, outtake))
-        .onFalse(Commands.runOnce(outtake::stop, outtake));
-
-    controller
-        .y()
-        .whileTrue(
-            new RunCommand(
-                () -> {
-                  intake.setTargetPosition(123.2);
-                  intake.intakeRoller();
-                },
-                intake))
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  intake.stopRoller();
-                  intake.holdCurrentPosition();
-                },
-                intake));
-
-    controller.a().onTrue(Commands.runOnce(() -> intake.setTargetPosition(35), intake));
-
-    // operator
-    //     .a()
-    //     .whileTrue(Commands.run(outtake::scoreWithVision, outtake))
-    //     .onFalse(Commands.runOnce(outtake::stop, outtake));
-
-    // operator
-    //     .x()
-    //     .whileTrue(Commands.run(transfer::forward, transfer))
-    //     .onFalse(Commands.runOnce(transfer::stop, transfer));
-
-    // operator
-    //     .b()
-    //     .whileTrue(Commands.run(transfer::backward, transfer))
-    //     .onFalse(Commands.runOnce(transfer::stop, transfer));
+                    () ->
+                        drive.setPose(
+                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
+                    drive)
+                .ignoringDisable(true));
   }
 
   /**
