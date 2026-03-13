@@ -48,7 +48,7 @@ public final class Constants {
     // pivot (js guessing, pls check w design or sumn to see what they want)
     public static final double STOWED_DEG = 141.943359375;
     public static final double HANDOFF_DEG = 35.0;
-    public static final double INTAKE_DEG = 122.6953125;
+    public static final double INTAKE_DEG = 125.0; // 122.6953125;
 
     // jam detection nums
     public static final double PIVOT_kP = 60.0;
@@ -59,7 +59,7 @@ public final class Constants {
     public static final double ACCELERATION = 30.0;
 
     // roller volltages
-    public static final double INTAKE_VOLTAGE = 5.5;
+    public static final double INTAKE_VOLTAGE = 6.4; // 5.5, 6.0
     public static final double OUTTAKE_VOLTAGE = -1.0;
     public static final double HANDOFF_VOLTAGE = 4.0;
 
