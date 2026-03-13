@@ -231,7 +231,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             Commands.sequence(
-                Commands.runOnce(outtake::ampScore, outtake),
+                Commands.runOnce(outtake::scoreWithVision, outtake),
                 Commands.waitSeconds(1.2),
                 Commands.run(transfer::forward, transfer)))
         .onFalse(
@@ -253,7 +253,7 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(
                 () -> {
-                  intake.setTargetPosition(122.695);
+                  intake.setTargetPosition(123.2);
                   intake.intakeRoller();
                 },
                 intake))
