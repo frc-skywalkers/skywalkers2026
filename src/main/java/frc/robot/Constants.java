@@ -38,28 +38,28 @@ public final class Constants {
     public static final int CANCODER_ID = 52;
 
     // inversion settings (IDK IM JS GUESSING PLS TUNE)
-    public static final boolean PIVOT_INVERTED = false;
-    public static final boolean ROLLER_INVERTED = false;
+    public static final boolean PIVOT_INVERTED = true;
+    public static final boolean ROLLER_INVERTED = true;
 
     // current lims
     public static final double STATOR_LIMIT_AMPS = 40.0;
     public static final double JAM_CURRENT_THRESHOLD = 35.0;
 
     // pivot (js guessing, pls check w design or sumn to see what they want)
-    public static final double STOWED_DEG = 0.0;
+    public static final double STOWED_DEG = 141.943359375;
     public static final double HANDOFF_DEG = 35.0;
-    public static final double DEPLOYED_DEG = 75.0;
+    public static final double INTAKE_DEG = 122.6953125;
 
     // jam detection nums
     public static final double PIVOT_kP = 60.0;
     public static final double PIVOT_kI = 0.0;
     public static final double PIVOT_kD = 2.0;
     public static final double PIVOT_kG = 0.3; // gravity feedforward
-    public static final double CRUISE_VELOCITY = 60.0; // rotations/sec
-    public static final double ACCELERATION = 120.0;
+    public static final double CRUISE_VELOCITY = 15.0; // rotations/sec
+    public static final double ACCELERATION = 30.0;
 
     // roller volltages
-    public static final double INTAKE_VOLTAGE = 1.0;
+    public static final double INTAKE_VOLTAGE = 4.2;
     public static final double OUTTAKE_VOLTAGE = -1.0;
     public static final double HANDOFF_VOLTAGE = 4.0;
 
@@ -84,7 +84,7 @@ public final class Constants {
     public static final double kSupplyCurrentLimit = 80.0; // 40.0, 43.0, 60
 
     // velocity setpoints WILL TUNE FS
-    public static final double kAmpScoreRPM = 000.0; // 5000.0, 6000.0, 8000,0, 10000 //6000
+    public static final double kAmpScoreRPM = 4800; // 5000.0, 6000.0, 8000,0, 10000 //6000
     public static final double kFeedRPM = 2400.0; // 1200
     public static final double kReverseRPM = -2000.0;
     public static final double kIdleHoldRPM = 300.0;
@@ -124,7 +124,7 @@ public final class Constants {
     public static final double STATOR_LIMIT_AMPS = 40.0;
 
     // Optional: voltage constants for forward/backward if needed
-    public static final double FORWARD_VOLTAGE = 2.0;
+    public static final double FORWARD_VOLTAGE = 4.5;
     public static final double BACKWARD_VOLTAGE = -2.0;
   }
 }
