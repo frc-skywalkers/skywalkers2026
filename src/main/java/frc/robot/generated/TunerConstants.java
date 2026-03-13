@@ -153,11 +153,12 @@ public class TunerConstants {
   private static final int kFrontLeftSteerMotorId = 2;
   private static final int kFrontLeftEncoderId = 3;
   */
-  private static final int kFrontLeftDriveMotorId = 4;
-  private static final int kFrontLeftSteerMotorId = 5;
-  private static final int kFrontLeftEncoderId = 6;
+  private static final int kFrontLeftDriveMotorId = 7;
+  private static final int kFrontLeftSteerMotorId = 8;
+  private static final int kFrontLeftEncoderId = 9;
   private static final Angle kFrontLeftEncoderOffset =
-      Radians.of(2.545 - Math.PI / 2 + Math.PI / 2); // Added these encoder offset values
+      Radians.of(-0.35 + Math.PI / 4 + Math.PI); // -0.35
+  // Radians.of(2.545 - Math.PI / 2 + Math.PI / 2); // Added these encoder offset values
   // private static final Angle kFrontLeftEncoderOffset = Radians.of(-1.388 + Math.PI - Math.PI /
   // 2); (last value)
   // Radians.of(-3.528 + Math.PI/2); (last yr)
@@ -173,11 +174,11 @@ public class TunerConstants {
   private static final int kFrontRightSteerMotorId = 5;
   private static final int kFrontRightEncoderId = 6;
   */
-  private static final int kFrontRightDriveMotorId = 7;
-  private static final int kFrontRightSteerMotorId = 8;
-  private static final int kFrontRightEncoderId = 9;
-  private static final Angle kFrontRightEncoderOffset =
-      Radians.of(-1.03 - Math.PI / 2 + Math.PI + Math.PI / 2); // Added these encoder offset values
+  private static final int kFrontRightDriveMotorId = 4;
+  private static final int kFrontRightSteerMotorId = 5;
+  private static final int kFrontRightEncoderId = 6;
+  private static final Angle kFrontRightEncoderOffset = Radians.of(-0.603 + Math.PI / 2 + Math.PI);
+  // Radians.of(-1.03 - Math.PI / 2 + Math.PI + Math.PI / 2); // Added these encoder offset values
   // rivate static final Angle kFrontRightEncoderOffset = Radians.of(-1.03 - Math.PI/2);
   // private static final Angle kFrontRightEncoderOffset = Radians.of(-3.528 - Math.PI / 2); (last
   // value)
@@ -193,17 +194,13 @@ public class TunerConstants {
   private static final int kBackLeftSteerMotorId = 11;
   private static final int kBackLeftEncoderId = 12;
   */
-  private static final int kBackLeftDriveMotorId = 1;
-  private static final int kBackLeftSteerMotorId = 2;
-  private static final int kBackLeftEncoderId = 3;
+  private static final int kBackLeftDriveMotorId = 10;
+  private static final int kBackLeftSteerMotorId = 11;
+  private static final int kBackLeftEncoderId = 12;
   private static final Angle kBackLeftEncoderOffset =
-      Radians.of(
-          0.02
-              + Math.PI
-              + Math.PI / 2
-              - Math.PI / 2
-              + Math.PI / 2); // Added these encoder offset values
-  // private static final Angle kBackLeftEncoderOffset = Radians.of(0.02 + Math.PI / 2 - Math.PI/2);
+      Radians.of(-0.621 - Math.PI / 4); // Added these encoder offset values
+  // private static final Angle kBackLeftEncoderOffset = Radians.of(0.02 + Math.PI + Math.PI / 2 -
+  // Math.PI/2 + + Math.PI / 2);
   // private static final Angle kBackLeftEncoderOffset = Radians.of(6.648 - Math.PI / 2); (last
   // value)
   // private static final Angle kBackLeftEncoderOffset = Rotations.of(-0.219482421875);
@@ -218,11 +215,11 @@ public class TunerConstants {
   private static final int kBackRightSteerMotorId = 8;
   private static final int kBackRightEncoderId = 9;
   */
-  private static final int kBackRightDriveMotorId = 10;
-  private static final int kBackRightSteerMotorId = 11;
-  private static final int kBackRightEncoderId = 12;
-  private static final Angle kBackRightEncoderOffset =
-      Radians.of(0.272 - Math.PI - Math.PI / 2 + Math.PI / 2); // Added these encoder offset values
+  private static final int kBackRightDriveMotorId = 1;
+  private static final int kBackRightSteerMotorId = 2;
+  private static final int kBackRightEncoderId = 3;
+  private static final Angle kBackRightEncoderOffset = Radians.of(-1.506 + Math.PI / 2);
+  // Radians.of(0.272 - Math.PI - Math.PI / 2 + Math.PI / 2); // Added these encoder offset values
   // private static final Angle kBackRightEncoderOffset = Radians.of(-0.913 + Math.PI - Math.PI /
   // 2); (last value)
   // private static final Angle kBackRightEncoderOffset = Rotations.of(0.17236328125);
