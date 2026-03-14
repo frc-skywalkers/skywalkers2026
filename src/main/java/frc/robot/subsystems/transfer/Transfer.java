@@ -12,7 +12,7 @@ public class Transfer extends SubsystemBase {
 
   /** Run forward at full speed */
   public void forward() {
-    m_io.setMotors(0.1);
+    m_io.setMotors(0.6);
   }
 
   /** Run backward at full speed */

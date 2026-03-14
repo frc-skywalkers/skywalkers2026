@@ -156,12 +156,59 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "shoot start",
         Commands.sequence(
-            Commands.run(outtake::ampScore, outtake), // start outtake immediately
+            Commands.runOnce(outtake::ampScore, outtake), // start outtake immediately
             Commands.waitSeconds(1),
-            Commands.run(
+            Commands.runOnce(() -> transfer.forward(), transfer),
+            Commands.waitSeconds(6),
+            Commands.runOnce(
                 () -> {
-                  outtake.ampScore();
-                  transfer.forward();
+                  outtake.stop();
+                  transfer.stop();
+                },
+                outtake,
+                transfer)));
+    NamedCommands.registerCommand(
+        "intake floor",
+        Commands.sequence(
+            Commands.runOnce(
+                () -> {
+                  intake.setTargetPosition(125); // 123.2
+                  intake.intakeRoller();
+                },
+                intake), // start outtake immediately
+            Commands.waitSeconds(4),
+            Commands.runOnce(
+                () -> {
+                  intake.stopRoller();
+                  intake.holdCurrentPosition();
+                },
+                intake),
+            Commands.waitSeconds(4)));
+    NamedCommands.registerCommand(
+        "intake pivot",
+        Commands.sequence(
+            Commands.runOnce(
+                () -> {
+                  intake.setTargetPosition(125); // 123.2
+                },
+                intake), // start outtake immediately
+            Commands.waitSeconds(2),
+            Commands.runOnce(
+                () -> {
+                  intake.holdCurrentPosition();
+                },
+                intake)));
+    NamedCommands.registerCommand(
+        "fifteen outtake",
+        Commands.sequence(
+            Commands.runOnce(outtake::ampScore, outtake), // start outtake immediately
+            Commands.waitSeconds(1),
+            Commands.runOnce(() -> transfer.forward(), transfer),
+            Commands.waitSeconds(10),
+            Commands.runOnce(
+                () -> {
+                  outtake.stop();
+                  transfer.stop();
                 },
                 outtake,
                 transfer)));
@@ -231,6 +278,39 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             Commands.sequence(
+                Commands.runOnce(outtake::ampScore, outtake),
+                Commands.waitSeconds(1.2),
+                Commands.run(transfer::forward, transfer)))
+        .onFalse(
+            Commands.runOnce(
+                () -> {
+                  outtake.stop();
+                  transfer.stop();
+                },
+                outtake,
+                transfer));
+
+    /*
+    controller
+        .leftBumper()
+        .whileTrue(
+            Commands.sequence(
+                Commands.runOnce(outtake::scoreWithVision, outtake),
+                Commands.waitSeconds(1.2),
+                Commands.run(transfer::forward, transfer)))
+        .onFalse(
+            Commands.runOnce(
+                () -> {
+                  outtake.stop();
+                  transfer.stop();
+                },
+                outtake,
+                transfer));
+      */
+    controller
+        .rightTrigger()
+        .whileTrue(
+            Commands.sequence(
                 Commands.runOnce(outtake::scoreWithVision, outtake),
                 Commands.waitSeconds(1.2),
                 Commands.run(transfer::forward, transfer)))
@@ -245,11 +325,6 @@ public class RobotContainer {
 
     controller
         .leftBumper()
-        .whileTrue(Commands.run(outtake::reverse, outtake))
-        .onFalse(Commands.runOnce(outtake::stop, outtake));
-
-    controller
-        .y()
         .whileTrue(
             new RunCommand(
                 () -> {
@@ -264,8 +339,23 @@ public class RobotContainer {
                   intake.holdCurrentPosition();
                 },
                 intake));
+    controller
+        .b()
+        .whileTrue(
+            new RunCommand(
+                () -> {
+                  intake.setTargetPosition(65);
+                },
+                intake))
+        .onFalse(
+            new InstantCommand(
+                () -> {
+                  intake.stopRoller();
+                  intake.holdCurrentPosition();
+                },
+                intake));
 
-    controller.a().onTrue(Commands.runOnce(() -> intake.setTargetPosition(35), intake));
+    controller.a().onTrue(Commands.runOnce(() -> intake.setTargetPosition(30), intake));
 
     // operator
     //     .a()

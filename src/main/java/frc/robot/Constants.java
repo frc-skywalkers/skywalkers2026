@@ -59,7 +59,7 @@ public final class Constants {
     public static final double ACCELERATION = 30.0;
 
     // roller volltages
-    public static final double INTAKE_VOLTAGE = 6.4; // 5.5, 6.0
+    public static final double INTAKE_VOLTAGE = 6.3; // 5.5, 6.0, 6.4
     public static final double OUTTAKE_VOLTAGE = -1.0;
     public static final double HANDOFF_VOLTAGE = 4.0;
 
@@ -124,7 +124,7 @@ public final class Constants {
     public static final double STATOR_LIMIT_AMPS = 40.0;
 
     // Optional: voltage constants for forward/backward if needed
-    public static final double FORWARD_VOLTAGE = 4.5;
+    public static final double FORWARD_VOLTAGE = 12.0; // 4.5, 6.0
     public static final double BACKWARD_VOLTAGE = -2.0;
   }
 }
