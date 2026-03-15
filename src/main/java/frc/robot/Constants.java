@@ -9,7 +9,6 @@ package frc.robot;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -18,7 +17,8 @@ import edu.wpi.first.wpilibj.RobotBase;
  */
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
-  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  // public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  public static final Mode currentMode = Mode.REAL;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -48,7 +48,7 @@ public final class Constants {
     // pivot (js guessing, pls check w design or sumn to see what they want)
     public static final double STOWED_DEG = 141.943359375;
     public static final double HANDOFF_DEG = 35.0;
-    public static final double INTAKE_DEG = 125.0; // 122.6953125;
+    public static final double INTAKE_DEG = 125.0; // 122.6953125;125
 
     // jam detection nums
     public static final double PIVOT_kP = 60.0;
@@ -59,7 +59,7 @@ public final class Constants {
     public static final double ACCELERATION = 30.0;
 
     // roller volltages
-    public static final double INTAKE_VOLTAGE = 6.3; // 5.5, 6.0, 6.4
+    public static final double INTAKE_VOLTAGE = 6.4; // 5.5, 6.0, 6.4, 6.3, 6.5
     public static final double OUTTAKE_VOLTAGE = -1.0;
     public static final double HANDOFF_VOLTAGE = 4.0;
 
@@ -84,7 +84,8 @@ public final class Constants {
     public static final double kSupplyCurrentLimit = 80.0; // 40.0, 43.0, 60
 
     // velocity setpoints WILL TUNE FS
-    public static final double kAmpScoreRPM = 4800; // 5000.0, 6000.0, 8000,0, 10000 //6000
+    public static final double kAmpScoreRPM = 4400; // 5000.0, 6000.0, 8000,0, 10000 //6000
+    public static final double kAmpSlowScoreRPM = 3900;
     public static final double kFeedRPM = 2400.0; // 1200
     public static final double kReverseRPM = -2000.0;
     public static final double kIdleHoldRPM = 300.0;

@@ -154,6 +154,20 @@ public class RobotContainer {
 
     // NameCommands.registerCommand("intake in", Commands.run(intake::, transfer));
     NamedCommands.registerCommand(
+        "shoot slow",
+        Commands.sequence(
+            Commands.runOnce(outtake::slowAmpScore, outtake), // start outtake immediately
+            Commands.waitSeconds(1),
+            Commands.runOnce(() -> transfer.forward(), transfer),
+            Commands.waitSeconds(6),
+            Commands.runOnce(
+                () -> {
+                  outtake.stop();
+                  transfer.stop();
+                },
+                outtake,
+                transfer)));
+    NamedCommands.registerCommand(
         "shoot start",
         Commands.sequence(
             Commands.runOnce(outtake::ampScore, outtake), // start outtake immediately
@@ -328,7 +342,7 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(
                 () -> {
-                  intake.setTargetPosition(123.2);
+                  intake.setTargetPosition(124.2);
                   intake.intakeRoller();
                 },
                 intake))

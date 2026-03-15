@@ -54,6 +54,10 @@ public class Outtake extends SubsystemBase {
     io.setVelocityRPM(OuttakeConstants.kAmpScoreRPM);
   }
 
+  public void slowAmpScore() {
+    io.setVelocityRPM(OuttakeConstants.kAmpSlowScoreRPM);
+  }
+
   public void feed() {
     io.setVelocityRPM(OuttakeConstants.kFeedRPM);
   }
