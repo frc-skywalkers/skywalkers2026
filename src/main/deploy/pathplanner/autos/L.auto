@@ -11,28 +11,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "shoot start"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "intake floor"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "2L"
-                }
-              }
-            ]
+            "pathName": "2L"
           }
         },
         {
@@ -42,33 +23,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "shoot start"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "4L"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "intake floor"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "5L"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake floor"
           }
         }
       ]
