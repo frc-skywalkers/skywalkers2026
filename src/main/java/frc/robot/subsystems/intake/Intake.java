@@ -32,6 +32,7 @@ public class Intake extends SubsystemBase {
 
     Logger.processInputs("Intake", inputs);
     System.out.println("Pivot Degrees: " + inputs.pivotPositionDeg);
+    System.out.println("Hold Position: " + holdPositionDeg);
   }
   // Spins rollers at intake voltage
   public void intakeRoller() {
@@ -50,15 +51,15 @@ public class Intake extends SubsystemBase {
   }
 
   public void setTargetPosition(double degrees) {
-    holdPositionDeg = degrees;
-    io.setPivotPositionDeg(degrees);
+    holdPositionDeg = 360 + degrees;
+    io.setPivotPositionDeg(Math.abs(360 + degrees));
     isHolding = true; // start holding after motion
   }
 
   public void holdCurrentPosition() {
     io.updateInputs(inputs);
     holdPositionDeg = inputs.pivotPositionDeg;
-    io.setPivotPositionDeg(holdPositionDeg);
+    io.setPivotPositionDeg(360 + holdPositionDeg);
   }
 
   public void stop() {

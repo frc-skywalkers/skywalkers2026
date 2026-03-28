@@ -78,7 +78,7 @@ public class RobotContainer {
 
         outtake = new Outtake(new OuttakeIOTalonFX());
         intake = new Intake(new IntakeIOTalonFX());
-        intake.setTargetPosition(30);
+        intake.setTargetPosition(0); // 10, 350, -10, -40, 40
         transfer = new Transfer(new TransferIOTalonFX());
 
         // intake = new Intake(new IntakeIOTalonFX());
@@ -328,7 +328,7 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(
                 () -> {
-                  intake.setTargetPosition(-110); // 123.32
+                  intake.setTargetPosition(115.0); // 123.32
                   intake.intakeRoller();
                 },
                 intake))
@@ -344,7 +344,7 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(
                 () -> {
-                  intake.setTargetPosition(62.0); // 65, 62
+                  intake.setTargetPosition(40); // 65, 62
                 },
                 intake))
         .onFalse(

@@ -38,7 +38,7 @@ public final class Constants {
     public static final int CANCODER_ID = 52;
 
     // inversion settings (IDK IM JS GUESSING PLS TUNE)
-    public static final boolean PIVOT_INVERTED = true;
+    public static final boolean PIVOT_INVERTED = true; // true
     public static final boolean ROLLER_INVERTED = true;
 
     // current lims
