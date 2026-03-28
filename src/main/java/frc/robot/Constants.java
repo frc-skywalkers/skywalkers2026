@@ -46,7 +46,7 @@ public final class Constants {
     public static final double JAM_CURRENT_THRESHOLD = 35.0;
 
     // pivot (js guessing, pls check w design or sumn to see what they want)
-    public static final double STOWED_DEG = 141.943359375;
+    public static final double STOWED_DEG = -170; // 141.943359375;
     public static final double HANDOFF_DEG = 35.0;
     public static final double INTAKE_DEG = 125.0; // 122.6953125;
 

@@ -11,7 +11,7 @@ public class Intake extends SubsystemBase {
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
   // Track hold position
-  private double holdPositionDeg = 0.0;
+  private double holdPositionDeg = 0.0; // -162
   private boolean isHolding = true;
 
   public Intake(IntakeIO io) {

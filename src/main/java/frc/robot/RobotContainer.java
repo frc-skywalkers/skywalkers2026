@@ -328,7 +328,7 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(
                 () -> {
-                  intake.setTargetPosition(123.2);
+                  intake.setTargetPosition(-110); // 123.32
                   intake.intakeRoller();
                 },
                 intake))
@@ -344,7 +344,7 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(
                 () -> {
-                  intake.setTargetPosition(65);
+                  intake.setTargetPosition(62.0); // 65, 62
                 },
                 intake))
         .onFalse(

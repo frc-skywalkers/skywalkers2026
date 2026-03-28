@@ -22,6 +22,9 @@ public class IntakeIOTalonFX implements IntakeIO {
     pivot.setControl(new NeutralOut()); // <-- important
     CANcoderConfiguration ccConfig = new CANcoderConfiguration();
 
+    ccConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+    ccConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.0;
+
     cancoder.getConfigurator().apply(ccConfig);
 
     config.MotorOutput.Inverted =
