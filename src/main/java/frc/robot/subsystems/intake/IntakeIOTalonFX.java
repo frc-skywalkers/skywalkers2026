@@ -23,7 +23,8 @@ public class IntakeIOTalonFX implements IntakeIO {
     CANcoderConfiguration ccConfig = new CANcoderConfiguration();
 
     // ccConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-    ccConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    ccConfig.MagnetSensor.SensorDirection =
+        SensorDirectionValue.Clockwise_Positive; // CounterClockwise_Positive;
     // ccConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.0;
 
     ccConfig.MagnetSensor.MagnetOffset = 0.5;
@@ -41,7 +42,7 @@ public class IntakeIOTalonFX implements IntakeIO {
     config.Slot0.kP = 11; // start low
     config.Slot0.kI = 0;
     config.Slot0.kD = 0.3; // small damping
-    config.Slot0.kG = -0.2; // gravity feedforward
+    config.Slot0.kG = -0.2; // gravity feedforward, -0.2
 
     config.MotionMagic.MotionMagicCruiseVelocity = CRUISE_VELOCITY;
     config.MotionMagic.MotionMagicAcceleration = ACCELERATION;

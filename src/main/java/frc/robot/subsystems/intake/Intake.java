@@ -51,15 +51,18 @@ public class Intake extends SubsystemBase {
   }
 
   public void setTargetPosition(double degrees) {
-    holdPositionDeg = 360 + degrees;
-    io.setPivotPositionDeg(Math.abs(360 + degrees));
+    // holdPositionDeg = 360 + degrees;
+    holdPositionDeg = degrees;
+    // io.setPivotPositionDeg(Math.abs(360 + degrees));
+    io.setPivotPositionDeg(degrees);
     isHolding = true; // start holding after motion
   }
 
   public void holdCurrentPosition() {
     io.updateInputs(inputs);
     holdPositionDeg = inputs.pivotPositionDeg;
-    io.setPivotPositionDeg(360 + holdPositionDeg);
+    // io.setPivotPositionDeg(360 + holdPositionDeg);
+    io.setPivotPositionDeg(holdPositionDeg);
   }
 
   public void stop() {
