@@ -279,8 +279,15 @@ public class RobotContainer {
         .whileTrue(
             Commands.sequence(
                 Commands.runOnce(outtake::ampScore, outtake),
-                Commands.runOnce(intake::intakeRollerPLUSULTRA, intake),
+                Commands.runOnce(() -> intake.setTargetPosition(-20), intake),
                 Commands.waitSeconds(1.2),
+                // 3. Start transfer
+                Commands.runOnce(transfer::forward, transfer),
+
+                // 4. NOW move pivot
+                Commands.runOnce(() -> intake.setTargetPosition(-25), intake),
+
+                // 5. Keep transfer running while held
                 Commands.run(transfer::forward, transfer)))
         .onFalse(
             Commands.runOnce(
