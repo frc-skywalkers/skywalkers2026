@@ -279,6 +279,7 @@ public class RobotContainer {
         .whileTrue(
             Commands.sequence(
                 Commands.runOnce(outtake::ampScore, outtake),
+                Commands.runOnce(intake::intakeRollerPLUSULTRA, intake),
                 Commands.waitSeconds(1.2),
                 Commands.run(transfer::forward, transfer)))
         .onFalse(
@@ -286,6 +287,7 @@ public class RobotContainer {
                 () -> {
                   outtake.stop();
                   transfer.stop();
+                  intake.stopRoller();
                 },
                 outtake,
                 transfer));

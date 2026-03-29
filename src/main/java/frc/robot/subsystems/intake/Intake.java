@@ -39,6 +39,10 @@ public class Intake extends SubsystemBase {
     io.setRollerVoltage(IntakeConstants.INTAKE_VOLTAGE); // 4 volts
   }
 
+  public void intakeRollerPLUSULTRA() {
+    io.setRollerVoltage(IntakeConstants.INTAKE_PLUS_ULTRA_VOLTAGE); // 4 volts
+  }
+
   // Stops rollers
   public void stopRoller() {
     io.setRollerVoltage(0.0);
