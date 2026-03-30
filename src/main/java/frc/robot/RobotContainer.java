@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AutoAlignCommand;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -278,7 +279,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             Commands.sequence(
-                Commands.runOnce(outtake::ampScore, outtake),
+                Commands.runOnce(outtake::scoreWithVision, outtake),
                 Commands.runOnce(() -> intake.setTargetPosition(-20), intake),
                 Commands.waitSeconds(1.2),
                 // 3. Start transfer
@@ -364,8 +365,7 @@ public class RobotContainer {
                 },
                 intake));
 
-    controller.a().onTrue(Commands.runOnce(() -> intake.setTargetPosition(30), intake));
-
+    controller.a().whileTrue(AutoAlignCommand.create(drive));
     // operator
     //     .a()
     //     .whileTrue(Commands.run(outtake::scoreWithVision, outtake))

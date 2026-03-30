@@ -31,8 +31,8 @@ public class Intake extends SubsystemBase {
     }
 
     Logger.processInputs("Intake", inputs);
-    System.out.println("Pivot Degrees: " + inputs.pivotPositionDeg);
-    System.out.println("Hold Position: " + holdPositionDeg);
+    // System.out.println("Pivot Degrees: " + inputs.pivotPositionDeg);
+    // System.out.println("Hold Position: " + holdPositionDeg);
   }
   // Spins rollers at intake voltage
   public void intakeRoller() {

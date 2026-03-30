@@ -85,7 +85,7 @@ public final class Constants {
     public static final double kSupplyCurrentLimit = 80.0; // 40.0, 43.0, 60
 
     // velocity setpoints WILL TUNE FS
-    public static final double kAmpScoreRPM = 4800; // 5000.0, 6000.0, 8000,0, 10000 //6000
+    public static final double kAmpScoreRPM = 4305; // 5000.0, 6000.0, 8000,0, 10000 //6000
     public static final double kFeedRPM = 2400.0; // 1200
     public static final double kReverseRPM = -2000.0;
     public static final double kIdleHoldRPM = 300.0;

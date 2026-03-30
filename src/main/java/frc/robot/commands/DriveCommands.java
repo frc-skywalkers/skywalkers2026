@@ -86,13 +86,57 @@ public class DriveCommands {
                   omega * drive.getMaxAngularSpeedRadPerSec());
           boolean isFlipped =
               DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
+                  && DriverStation.getAlliance().get() == Alliance.Blue; // Red
           drive.runVelocity(
               ChassisSpeeds.fromFieldRelativeSpeeds(
                   speeds,
                   isFlipped
                       ? drive.getRotation().plus(new Rotation2d(Math.PI))
                       : drive.getRotation()));
+        },
+        drive);
+  }
+
+  public static Command autoAlign(Drive drive) {
+
+    double kP_rotation = 0.03; // tune this for your turning speed
+    double cameraOffsetMeters = -0.165; // 6.5 inches left
+    double flickerBufferDegrees = 1.5; // ignore changes smaller than this
+    double targetDistance = 1.0; // not used, but for offset calculation
+
+    return Commands.run(
+        () -> {
+          if (!frc.robot.util.Limelight.hasTarget()) {
+            drive.stop(); // stop if no target
+            return;
+          }
+
+          // Get Limelight horizontal angle
+          double rawTx = frc.robot.util.Limelight.getTX();
+          double distance = frc.robot.util.Limelight.getDistanceMeters();
+
+          // Camera offset compensation
+          double angleOffsetRadians = Math.atan(cameraOffsetMeters / distance);
+          double angleOffsetDegrees = Math.toDegrees(angleOffsetRadians);
+          double correctedTx = rawTx + angleOffsetDegrees;
+
+          // Flicker buffer: ignore tiny changes
+          if (Math.abs(correctedTx) < flickerBufferDegrees) {
+            correctedTx = 0.0;
+          }
+
+          // Rotation command
+          double omega = -correctedTx * kP_rotation;
+
+          // Clamp rotation speed
+          omega = MathUtil.clamp(omega, -2.0, 2.0);
+
+          // Run rotation only
+          drive.runVelocity(
+              new ChassisSpeeds(
+                  0.0, // x speed
+                  0.0, // y speed
+                  omega));
         },
         drive);
   }
@@ -137,7 +181,7 @@ public class DriveCommands {
                       omega);
               boolean isFlipped =
                   DriverStation.getAlliance().isPresent()
-                      && DriverStation.getAlliance().get() == Alliance.Red;
+                      && DriverStation.getAlliance().get() == Alliance.Blue; // Red
               drive.runVelocity(
                   ChassisSpeeds.fromFieldRelativeSpeeds(
                       speeds,
