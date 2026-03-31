@@ -279,7 +279,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             Commands.sequence(
-                Commands.runOnce(outtake::scoreWithVision, outtake),
+                Commands.runOnce(outtake::ampScore, outtake), // scoreWithVision
                 Commands.runOnce(() -> intake.setTargetPosition(-20), intake),
                 Commands.waitSeconds(1.2),
                 // 3. Start transfer
