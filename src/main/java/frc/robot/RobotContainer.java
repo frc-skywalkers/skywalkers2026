@@ -169,15 +169,15 @@ public class RobotContainer {
                 outtake,
                 transfer)));
     NamedCommands.registerCommand(
-        "intake floor",
+        "intakeFLOOR",
         Commands.sequence(
             Commands.runOnce(
                 () -> {
-                  intake.setTargetPosition(125); // 123.2
+                  intake.setTargetPosition(-110.0); // 123.2
                   intake.intakeRoller();
                 },
                 intake), // start outtake immediately
-            Commands.waitSeconds(4),
+            Commands.waitSeconds(5),
             Commands.runOnce(
                 () -> {
                   intake.stopRoller();
@@ -186,19 +186,39 @@ public class RobotContainer {
                 intake),
             Commands.waitSeconds(4)));
     NamedCommands.registerCommand(
-        "intake pivot",
+        "intakeDRIVE",
         Commands.sequence(
             Commands.runOnce(
                 () -> {
-                  intake.setTargetPosition(125); // 123.2
+                  intake.setTargetPosition(-70); // 123.2
                 },
                 intake), // start outtake immediately
-            Commands.waitSeconds(2),
+            Commands.waitSeconds(0.5),
             Commands.runOnce(
                 () -> {
                   intake.holdCurrentPosition();
                 },
                 intake)));
+                
+      NamedCommands.registerCommand(
+        "shootEIGHT",
+        Commands.sequence(
+            Commands.runOnce(outtake::ampScore, outtake),
+            Commands.runOnce(() -> intake.setTargetPosition(-20), intake),
+                // Commands.waitSeconds(1.2),
+            Commands.waitSeconds(1),
+            Commands.runOnce(transfer::forward, transfer),
+            Commands.runOnce(() -> intake.setTargetPosition(-25), intake),
+            Commands.run(transfer::forward, transfer),
+            Commands.waitSeconds(3.5),
+            Commands.runOnce(
+                () -> {
+                  outtake.stop();
+                  transfer.stop();
+                  intake.stopRoller();
+                },
+                outtake,
+                transfer, intake)));
     NamedCommands.registerCommand(
         "fifteen outtake",
         Commands.sequence(
