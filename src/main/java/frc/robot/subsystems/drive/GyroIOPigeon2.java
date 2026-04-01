@@ -32,7 +32,14 @@ public class GyroIOPigeon2 implements GyroIO {
     if (TunerConstants.DrivetrainConstants.Pigeon2Configs != null) {
       pigeon.getConfigurator().apply(TunerConstants.DrivetrainConstants.Pigeon2Configs);
     } else {
-      pigeon.getConfigurator().apply(new Pigeon2Configuration());
+      // pigeon.getConfigurator().apply(new Pigeon2Configuration());
+      Pigeon2Configuration config = new Pigeon2Configuration();
+
+      config.MountPose.MountPoseYaw = 0.0;
+      config.MountPose.MountPosePitch = 0.0;
+      config.MountPose.MountPoseRoll = 0.0;
+
+      pigeon.getConfigurator().apply(config);
     }
 
     pigeon.getConfigurator().setYaw(0.0);
@@ -48,6 +55,8 @@ public class GyroIOPigeon2 implements GyroIO {
     inputs.connected = BaseStatusSignal.refreshAll(yaw, yawVelocity).equals(StatusCode.OK);
     inputs.yawPosition = Rotation2d.fromDegrees(yaw.getValueAsDouble());
     inputs.yawVelocityRadPerSec = Units.degreesToRadians(yawVelocity.getValueAsDouble());
+
+    System.out.println("Yaw Position: " + inputs.yawPosition);
 
     inputs.odometryYawTimestamps =
         yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();

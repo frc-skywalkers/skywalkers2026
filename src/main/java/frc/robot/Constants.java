@@ -59,8 +59,8 @@ public final class Constants {
     public static final double ACCELERATION = 20.0; // 30.0
 
     // roller volltages
-    public static final double INTAKE_VOLTAGE = -5.3;
-    public static final double INTAKE_PLUS_ULTRA_VOLTAGE = -6.7; // 5.5, 6.0, 6.4, 6.3, -6.3
+    public static final double INTAKE_VOLTAGE = -5.0; //
+    public static final double INTAKE_PLUS_ULTRA_VOLTAGE = -6.3; // 5.5, 6.0, 6.4, 6.3, -6.3, 6.7
     public static final double OUTTAKE_VOLTAGE = -1.0;
     public static final double HANDOFF_VOLTAGE = 4.0;
 
