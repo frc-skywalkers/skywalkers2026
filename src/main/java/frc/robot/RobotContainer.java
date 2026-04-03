@@ -9,6 +9,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,6 +52,7 @@ public class RobotContainer {
   private final Outtake outtake;
   private final Transfer transfer;
   private final Intake intake;
+  private boolean flipped = false;
   //   private final Intake intake;
 
   // Controller
@@ -177,14 +180,30 @@ public class RobotContainer {
                   intake.intakeRoller();
                 },
                 intake), // start outtake immediately
-            Commands.waitSeconds(5),
+            Commands.waitSeconds(5.7),
             Commands.runOnce(
                 () -> {
                   intake.stopRoller();
                   intake.holdCurrentPosition();
                 },
                 intake),
-            Commands.waitSeconds(4)));
+            Commands.waitSeconds(0)));
+    NamedCommands.registerCommand(
+        "intakeTRENCH",
+        Commands.sequence(
+            Commands.runOnce(
+                () -> {
+                  intake.setTargetPosition(-70.0); // 123.2
+                },
+                intake), // start outtake immediately
+            Commands.waitSeconds(1),
+            Commands.runOnce(
+                () -> {
+                  intake.stopRoller();
+                  intake.holdCurrentPosition();
+                },
+                intake),
+            Commands.waitSeconds(0)));
     NamedCommands.registerCommand(
         "intakeDRIVE",
         Commands.sequence(
@@ -199,18 +218,18 @@ public class RobotContainer {
                   intake.holdCurrentPosition();
                 },
                 intake)));
-                
-      NamedCommands.registerCommand(
+
+    NamedCommands.registerCommand(
         "shootEIGHT",
         Commands.sequence(
             Commands.runOnce(outtake::ampScore, outtake),
             Commands.runOnce(() -> intake.setTargetPosition(-20), intake),
-                // Commands.waitSeconds(1.2),
+            // Commands.waitSeconds(1.2),
             Commands.waitSeconds(1),
             Commands.runOnce(transfer::forward, transfer),
             Commands.runOnce(() -> intake.setTargetPosition(-25), intake),
-            Commands.run(transfer::forward, transfer),
-            Commands.waitSeconds(3.5),
+            Commands.runOnce(transfer::forward, transfer),
+            Commands.waitSeconds(2.75),
             Commands.runOnce(
                 () -> {
                   outtake.stop();
@@ -218,7 +237,8 @@ public class RobotContainer {
                   intake.stopRoller();
                 },
                 outtake,
-                transfer, intake)));
+                transfer,
+                intake)));
     NamedCommands.registerCommand(
         "fifteen outtake",
         Commands.sequence(
@@ -299,7 +319,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             Commands.sequence(
-                Commands.runOnce(outtake::ampScore, outtake), // scoreWithVision
+                Commands.runOnce(outtake::scoreWithVision, outtake), // scoreWithVision
                 Commands.runOnce(() -> intake.setTargetPosition(-20), intake),
                 Commands.waitSeconds(1.2),
                 // 3. Start transfer
@@ -369,6 +389,23 @@ public class RobotContainer {
                   intake.holdCurrentPosition();
                 },
                 intake));
+
+    controller
+        .povUp()
+        .onTrue(
+            Commands.runOnce(
+                () -> {
+                  flipped = !flipped;
+
+                  var pose = drive.getPose();
+                  var newRotation =
+                      flipped
+                          ? pose.getRotation().plus(Rotation2d.fromDegrees(180))
+                          : pose.getRotation().minus(Rotation2d.fromDegrees(180));
+
+                  drive.setPose(new Pose2d(pose.getTranslation(), newRotation));
+                },
+                drive));
     controller
         .b()
         .whileTrue(

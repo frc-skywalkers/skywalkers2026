@@ -59,6 +59,7 @@ public class Outtake extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs(OuttakeConstants.kLoggingPath, inputs);
+    System.out.println(Limelight.getDistanceMeters());
   }
 
   // presets

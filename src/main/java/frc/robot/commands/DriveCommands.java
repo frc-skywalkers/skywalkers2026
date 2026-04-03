@@ -200,6 +200,18 @@ public class DriveCommands {
    *
    * <p>This command should only be used in voltage control mode.
    */
+  public static Command flipHeading(Drive drive) {
+    return Commands.runOnce(
+        () -> {
+          var pose = drive.getPose();
+
+          drive.setPose(
+              new Pose2d(
+                  pose.getTranslation(), pose.getRotation().plus(Rotation2d.fromDegrees(180))));
+        },
+        drive);
+  }
+
   public static Command feedforwardCharacterization(Drive drive) {
     List<Double> velocitySamples = new LinkedList<>();
     List<Double> voltageSamples = new LinkedList<>();

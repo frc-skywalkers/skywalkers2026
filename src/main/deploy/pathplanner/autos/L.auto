@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "shoot start"
+            "name": "shootEIGHT"
           }
         },
         {
@@ -21,54 +21,81 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "intake floor"
+                  "pathName": "4L"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "2L"
+                  "name": "intakeTRENCH"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "3L"
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "5L"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "6L"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "7L"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeFLOOR"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "8L"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeTRENCH"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shoot start"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4L"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake floor"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "5L"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake floor"
+            "name": "shootEIGHT"
           }
         }
       ]
